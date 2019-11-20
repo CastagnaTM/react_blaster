@@ -1,3 +1,10 @@
+
+/* Landing and Login/Signup */
+.form {
+  text-align:  center;
+}
+
+/* Home Screen Stuff! */
 .home-screen-header {
   text-align:  center;
 }
@@ -6,6 +13,8 @@
   align-items: center;
   justify-content: center;
 }
+
+/* Game Display! */
 .tile-grid-container {
   display: flex;
   align-items: center;
