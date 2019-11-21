@@ -9,24 +9,41 @@ export default class Tiles extends Component{
 
     state = {
         isClicked: false,
-        friendlyBackgroundColor: '#18FCFF'
+        // backgroundColor: '#18FCFF'
     }
     
     
 
     handleClick = () => {
-        this.setState({
-            isClicked: true,
-            friendlyBackgroundColor: '#3F1923'
-        })
+        if(this.props.target_type === "friendly"){
+            this.setState({
+                isClicked: true,
+                backgroundColor: '#3F1923'
+            })
+        } else{
+            this.setState({
+                isClicked: true,
+                backgroundColor: 'green'
+            })
+        }
+        
     }
     
     render() {
-        return (
-            <div className='tile-target' onClick={this.handleClick}>
-                <img className='tile-img' style={{backgroundColor: this.state.friendlyBackgroundColor}} 
-                src={this.state.isClicked ? friendlySad : friendly1}/>
+        if(this.props.target_type === 'debris'){
+            return (
+                <div className='tile-target' onClick={this.handleClick} style={{backgroundColor: this.state.backgroundColor}}>
+                    <p>{this.props.target_type}</p>
+                </div>
+            )
+        } else if(this.props.target_type === 'friendly'){
+            return(
+                <div className='tile-target' onClick={this.handleClick} style={{backgroundColor: this.state.backgroundColor}}>
+                    <img className='tile-img' style={{backgroundColor: this.state.friendlyBackgroundColor}} 
+                    src={this.state.isClicked ? friendlySad : friendly1}/>
             </div>
-        )
+            )
+        }
+       
     }
 }
