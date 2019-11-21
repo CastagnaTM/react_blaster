@@ -11,11 +11,6 @@ export default class HomeScreen extends Component{
         selectedLevel: null
     }
 
-    // top of the screen = level select in game font
-    // everything shares a cool background
-    // the main of the page holds many components, and stylings for those components
-
-
     componentDidMount = () => {
         this.getLevels()
     }
@@ -30,18 +25,19 @@ export default class HomeScreen extends Component{
                 <div className='home-screen-body'>
                     {this.state.levels.map((level, i) => <LevelSelector key={i}{...level} 
                     loadLevel={this.loadLevel}
-                    level={this.state.levels}
                     />)}
                 </div>
             </div>
         )
     }
     loadLevel = (info) => {
+        let obj = info
         this.setState({
+            selectedLevel: obj,
             play: true
         })
-        console.log(info)
-        this.play(info)
+        
+        
     }
 
     getLevels = () => {
@@ -54,9 +50,10 @@ export default class HomeScreen extends Component{
         })
     }
 
-    play = (info) => {
+    play = () => {
+        // console.log(this.state.selectedLevel)
         return (
-                <LevelContainer/>
+                <LevelContainer selectedLevel={this.state.selectedLevel}/>
         )
     }
 
@@ -67,7 +64,8 @@ export default class HomeScreen extends Component{
             return (
                 this.levelSelect()
             )
-        } else {
+        } 
+        else {
             return (
                 this.play()
             )
