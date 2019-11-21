@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
 import LevelContainer from '../Containers/LevelContainer'
+import LevelSelector from '../Components/LevelSelector'
 
 
 export default class HomeScreen extends Component{
 
     state = {
-        play: false
+        play: false,
+        levels: [],
+        selectedLevel: null
     }
 
     // top of the screen = level select in game font
     // everything shares a cool background
     // the main of the page holds many components, and stylings for those components
+
+
+    componentDidMount = () => {
+        this.getLevels()
+    }
+
     levelSelect = () => {
         return(
             <div>
@@ -19,17 +28,33 @@ export default class HomeScreen extends Component{
                 </div>
 
                 <div className='home-screen-body'>
-                    <button onClick={() => this.loadLevel()}>Start</button> {/* this will take info later to determine which level */}
+                    {this.state.levels.map((level, i) => <LevelSelector key={i}{...level} 
+                    loadLevel={this.loadLevel}
+                    level={this.state.levels}
+                    />)}
                 </div>
             </div>
         )
     }
-    loadLevel = () => {
+    loadLevel = (info) => {
         this.setState({
             play: true
         })
+        console.log(info)
+        this.play(info)
     }
-    play = () => {
+
+    getLevels = () => {
+        fetch('http://localhost:3000/levels')
+        .then(resp => resp.json())
+        .then(data => {
+           this.setState({
+               levels: data
+           })
+        })
+    }
+
+    play = (info) => {
         return (
                 <LevelContainer/>
         )
