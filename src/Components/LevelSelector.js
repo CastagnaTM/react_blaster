@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 export default class LevelSelector extends Component {
 
 
-
+    //this is really just the button that the user clicks to select a level
     render(){
         return(
             <div>
