@@ -127,8 +127,8 @@ export default class LevelContainer extends Component{
                         {this.renderTargets()}
                     </div>
                 </div>
-                <div>
-                    <p>Score: {this.state.levelPoints}</p>
+                <div style={{textAlign: 'center'}}>
+                    <p style={{color:'grey'}}>Score: {this.state.levelPoints}</p>
                 </div>
             </div>
         )
