@@ -8,39 +8,31 @@ import friendlySad from '../Assets/FriendlySad.png'
 export default class Tiles extends Component{
 
     state = {
-        isClicked: false,
-        // backgroundColor: '#18FCFF'
+        backgroundColor: '#18FCFF',
+        count: 0
     }
-    
-    
 
-    handleClick = () => {
-        if(this.props.target_type === "friendly"){
+    resetState = () => {
             this.setState({
-                isClicked: true,
-                backgroundColor: '#3F1923'
-            })
-        } else{
-            this.setState({
-                isClicked: true,
-                backgroundColor: 'green'
-            })
-        }
-        
+            isClicked: false,
+            backgroundColor: '#18FCFF'
+        })
     }
     
     render() {
+       
         if(this.props.target_type === 'debris'){
+           
             return (
-                <div className='tile-target' onClick={this.handleClick} style={{backgroundColor: this.state.backgroundColor}}>
+                <div className='tile-target' onClick={() => this.props.handleClick(this.props.name)} style={{backgroundColor: this.props.isClicked ? 'green' : this.state.backgroundColor}} >
                     <p>{this.props.target_type}</p>
                 </div>
             )
-        } else if(this.props.target_type === 'friendly'){
+        } 
+        if(this.props.target_type === 'friendly'){
             return(
-                <div className='tile-target' onClick={this.handleClick} style={{backgroundColor: this.state.backgroundColor}}>
-                    <img className='tile-img' style={{backgroundColor: this.state.friendlyBackgroundColor}} 
-                    src={this.state.isClicked ? friendlySad : friendly1}/>
+                <div className='tile-target' onClick={() => this.props.handleClick(this.props.name)} style={{backgroundColor: this.props.isClicked ? '#3F1923' : this.state.backgroundColor}}>
+                    <img className='tile-img' src={this.props.isClicked ? friendlySad : friendly1}/>
             </div>
             )
         }
