@@ -12,6 +12,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  height: auto;
+  width: auto;
 }
 
 /* Game Display! */
@@ -19,12 +21,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 10%;
 }
 .tile-grid {
   float: left;
   width: 412px;
   margin-left: 20px;
+  margin-top: 10%;
   padding: 5px;
   border-color: #D125DC;
   border-style: solid;
@@ -56,4 +58,25 @@
 .tile-img-friendly {
   max-width: 90px;
   max-height: 90px;
+}
+.level-one {
+  background-image: url('./Assets/levelOneBg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+.level-two {
+  background-image: url('./Assets/levelTwoBg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+.level-three {
+  background-image: url('./Assets/levelThreeBg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
 }
