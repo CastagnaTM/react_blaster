@@ -1,6 +1,8 @@
 import React, { Component} from 'react'
 import friendly1 from '../Assets/Friendly1.png'
 import friendlySad from '../Assets/FriendlySad.png'
+import Satellite from '../Assets/Satellite.png'
+import Explosion from '../Assets/Explosion.png'
 
 
 
@@ -24,7 +26,7 @@ export default class Targets extends Component{
            
             return (
                 <div className='tile-target' onClick={() => this.props.handleClick(this.props.name, this.props.target_type)} style={{backgroundColor: this.props.isClicked ? 'green' : this.state.backgroundColor}} >
-                    <p>{this.props.target_type}</p>
+                    <img className='tile-img' src={this.props.isClicked ? Explosion : Satellite}/>
                 </div>
             )
         } 
