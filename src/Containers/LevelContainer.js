@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Targets from '../Components/Targets'
-
-
+import FlipMove from 'react-flip-move'
 
 export default class LevelContainer extends Component{
 
@@ -14,7 +13,9 @@ export default class LevelContainer extends Component{
         counter: 0,
         isClicked: false,
         levelPoints: 0,
-        levelComplete: false 
+        levelComplete: false,
+        firendlyBackgroundColor: '#18FCFF',
+        debrisBackgroundColor: '#0B162A',
        
     }
 
@@ -46,10 +47,7 @@ export default class LevelContainer extends Component{
         }
     }
     establishTargets = (string) => {
-        //attributes name, type, isClicked
-        //name can be a counter, type determined by number
-        //debris = 0, friendly = 1
-        //isClicked is always false
+        
         let targets = [];
         let targetArray = string.split('');
         for (let i = 0; i < targetArray.length; i++){
@@ -72,7 +70,7 @@ export default class LevelContainer extends Component{
         }
         var gameLoop = setInterval(() =>{
             this.resetTargets()
-            this.loadLevelOneGrid()
+            this.loadLevelGrid()
             this.setState({
                 counter: this.state.counter+1
             })
@@ -94,12 +92,13 @@ export default class LevelContainer extends Component{
   
     //this should be a general load level grid function with a switch statement determining what to load based on selected level
     //load the targets
-    loadLevelOneGrid = () => {
+    loadLevelGrid = () => {
         this.setState({
             targets: this.shuffleGrid(this.state.targets)
         })
     }
     //shuffles the targets for loading
+ 
     shuffleGrid = (array) => {
         let currentIndex = array.length, temp, random;
         while(0 !== currentIndex){
@@ -111,9 +110,20 @@ export default class LevelContainer extends Component{
         }
         return array
     }
-    //passes the targets to the Target component
+    // passes the targets to the Target component
     renderTargets = () => {
-        return this.state.targets.map((tile, i) => <Targets handleClick={this.handleClick} key={i}{...tile}/>)
+        return <FlipMove
+        staggerDelayBy={100}
+        appearAnimation="elevator"
+        enterAnimation="fade"
+        leaveAnimation="fade"
+        >
+        {this.state.targets.map(target => <Targets 
+        handleClick={this.handleClick} key={target.name}{...target}
+        friendlyBackgroundColor={this.state.friendlyBackgroundColor}
+        debrisBackgroundColor={this.state.debrisBackgroundColor}
+        />)}
+        </FlipMove>
     }
 
     render() {
@@ -121,6 +131,7 @@ export default class LevelContainer extends Component{
             return <h1>LOADING!</h1>
         }
         return (
+            
             <div className={this.props.selectedLevel.css}>    
                 <div className='tile-grid-container'>
                     <div className='tile-grid'>
@@ -131,6 +142,7 @@ export default class LevelContainer extends Component{
                     <p style={{color:'grey'}}>Score: {this.state.levelPoints}</p>
                 </div>
             </div>
+            
         )
     }
 
