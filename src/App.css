@@ -29,9 +29,9 @@
   margin-top: 10%;
   padding: 5px;
   border-color: #D125DC;
-  border-style: solid;
+  border-style: inset;
   border-width: 5px;
-  background-color: #25243D;
+  background-image: url('./Assets/gridBg.png');
   
 }
 .tile-target {
@@ -43,7 +43,7 @@
   margin-top: 2px;
   margin-bottom: 2px;
   padding: 10px;
-  border-color: #9A1694;
+  border-color: #223553;
   border-style: solid;
   border-width: 2px;
   background-color: #18FCFF;
@@ -54,6 +54,16 @@
 .tile-img {
   max-width: 90px;
   max-height: 90px;
+}
+.level-score{
+  align-items: center;
+  justify-content: center;
+  width: 138px;
+  margin-left: 518px;
+  background-color: #223553;
+  border-color: #344257;
+  border-style: ridge;
+  border-width: 3px;
 }
 .level-one {
   background-image: url('./Assets/levelOneBg.jpg');

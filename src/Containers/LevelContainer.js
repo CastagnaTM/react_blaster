@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Targets from '../Components/Targets'
+import LevelEnd from '../Components/LevelEnd'
 import FlipMove from 'react-flip-move'
 
 export default class LevelContainer extends Component{
@@ -13,7 +14,8 @@ export default class LevelContainer extends Component{
         counter: 0,
         isClicked: false,
         levelPoints: 0,
-        levelComplete: false,
+        success: false,
+        levelEnd: false,
         firendlyBackgroundColor: '#18FCFF',
         debrisBackgroundColor: '#0B162A',
        
@@ -78,27 +80,28 @@ export default class LevelContainer extends Component{
             if(this.state.counter === 5 ){
                 clearInterval(gameLoop)
                 this.setState({
-                    levelComplete: true
+                    success: true,
+                    levelEnd: true
                 })
-                this.props.levelComplete(this.state.levelComplete, this.state.levelPoints) 
             }
             if(this.state.levelPoints < 0){
                 clearInterval(gameLoop)
-                this.props.levelComplete(this.state.levelComplete, this.state.levelPoints)
+                this.setState({
+                    levelEnd: true
+                })
             }
         }, 2000)    
         
     }
   
-    //this should be a general load level grid function with a switch statement determining what to load based on selected level
     //load the targets
     loadLevelGrid = () => {
         this.setState({
             targets: this.shuffleGrid(this.state.targets)
         })
     }
+
     //shuffles the targets for loading
- 
     shuffleGrid = (array) => {
         let currentIndex = array.length, temp, random;
         while(0 !== currentIndex){
@@ -110,6 +113,7 @@ export default class LevelContainer extends Component{
         }
         return array
     }
+
     // passes the targets to the Target component
     renderTargets = () => {
         return <FlipMove
@@ -130,20 +134,28 @@ export default class LevelContainer extends Component{
         if (this.state.targets === null){
             return <h1>LOADING!</h1>
         }
+        if (this.state.levelEnd){
+            return(
+                <LevelEnd 
+                success={this.state.success}
+                levelPoints={this.state.levelPoints}
+                levelEnd={this.state.levelEnd}
+                levelComplete={this.props.levelComplete}
+                />
+            )
+        }
         return (
-            
             <div className={this.props.selectedLevel.css}>    
                 <div className='tile-grid-container'>
                     <div className='tile-grid'>
                         {this.renderTargets()}
                     </div>
                 </div>
-                <div style={{textAlign: 'center'}}>
-                    <p style={{color:'grey'}}>Score: {this.state.levelPoints}</p>
+                <div className='level-score'>
+                    <p style={{color:'whitesmoke', textAlign: 'center'}}>Score: {this.state.levelPoints}</p>
                 </div>
             </div>
             
         )
     }
-
 }
