@@ -11,6 +11,7 @@ export default class HomeScreen extends Component{
         levels: [],
         selectedLevel: null,
         totalPoints: 0,
+        playedOnce: false
     }
 
     //calls the fetch to load level options
@@ -19,14 +20,16 @@ export default class HomeScreen extends Component{
     }
 
     //renders buttons for each load-able level
+    //add abiltity to load different difficulties with different formats
+    //also hide levels that haven't been unlocked yet
     levelSelect = () => {
         return(
             <div>
                 <div className='home-screen-header'>
                     <h4>Select A Level</h4>
                 </div>
-                <div>
-        <p>Your Total Score: {this.state.totalPoints}</p>
+                <div className='home-screen-header'>
+                    <p>{this.state.playedOnce ? `New Total Score: ${this.state.totalPoints}` : `Total Score: ${this.state.totalPoints}`}</p>
                 </div>
 
                 <div className='home-screen-body'>
@@ -59,26 +62,23 @@ export default class HomeScreen extends Component{
     //renders the levelContainer (AKA the selected level)
     play = () => {
         return (
-            <LevelContainer selectedLevel={this.state.selectedLevel}
+            <LevelContainer 
+            selectedLevel={this.state.selectedLevel}
             levelComplete={this.levelComplete}
             />
         )
     }
 
     levelComplete = (completed, levelPoints) =>{
-        
         if (completed === true){
             this.setState({
+            totalPoints: this.state.totalPoints + levelPoints,
+            playedOnce: true
+            })
+        }
+        this.setState({
             playLevel: false,
-            totalPoints: this.state.totalPoints + levelPoints
-            })
-        }
-        else {
-            this.setState({
-                playLevel: false,
-            })
-        }
-        
+        })
     }
 
     render() {

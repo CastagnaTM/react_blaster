@@ -25,7 +25,6 @@ export default class Targets extends Component{
     render() {
        
         if(this.props.target_type === 'debris'){
-           
             return (
                 <div className='tile-target' onClick={() => this.props.handleClick(this.props.name, this.props.target_type)} style={{backgroundColor: this.props.isClicked ? '#1D9067' : this.state.debrisBackgroundColor}} >
                     <img className='tile-img' src={this.props.isClicked ? Explosion : Satellite}/>
