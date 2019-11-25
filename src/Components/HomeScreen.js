@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import LevelContainer from '../Containers/LevelContainer'
 import LevelSelector from '../Components/LevelSelector'
+import friendlySmall from '../Assets/FriendlySmall.png'
+import satelliteIcon from '../Assets/SatelliteIcon.png'
+import BombIcon from '../Assets/BombIcon.png'
+
 
 //this component holds the homescreen, including level selection and potentially other options
 
@@ -30,11 +34,30 @@ export default class HomeScreen extends Component{
                     <p style={{color: 'white'}}>{this.state.playedOnce ? `New Total Score: ${this.state.totalPoints}` : `Total Score: ${this.state.totalPoints}`}</p>
 
                 </div>
-                <div className='level-select-container'>
-                    <div className='level-select'>
-                        {this.state.levels.map((level, i) => <LevelSelector key={i}{...level} 
-                        loadLevel={this.loadLevel}
-                        />)}
+                <div className='column'>
+                    <div className='level-select-container'>
+                        <div className='level-select'>
+                            {this.state.levels.map((level, i) => <LevelSelector key={i}{...level} 
+                            loadLevel={this.loadLevel}
+                            />)}
+                        </div>
+                    </div>
+                    <div className='instructions'>
+                        <div className='lines'>
+                            <h2 className='text'>Instructions:</h2>
+                            <div className='instructions-icons'>
+                                <img className='stikes-img' src={friendlySmall}></img>
+                                <p className='text'>Don't Shoot These</p>
+                            </div>
+                            <div className='instructions-icons'>
+                                <img className='stikes-img' src={satelliteIcon}></img>
+                                <p className='text'>Shoot These</p>
+                            </div>
+                            <div className='instructions-icons'>
+                                <img className='stikes-img' src={BombIcon}></img>
+                                <p className='text'>Shoot These If You Want, But It's A Bad Idea</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
