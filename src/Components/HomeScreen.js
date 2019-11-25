@@ -44,7 +44,8 @@ export default class HomeScreen extends Component{
                     </div>
                     <div className='instructions'>
                         <div className='lines'>
-                            <h2 className='text'>Instructions:</h2>
+                            <h3 className='text'>Instructions</h3>
+                            <p className='text'>You Have 30 seconds to:</p>
                             <div className='instructions-icons'>
                                 <img className='stikes-img' src={friendlySmall}></img>
                                 <p className='text'>Don't Shoot These</p>
