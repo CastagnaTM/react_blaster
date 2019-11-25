@@ -9,7 +9,6 @@ export default class LevelContainer extends Component{
 
     state = {
         selectedLevel: this.props.selectedLevel, //this should hold all info the container needs to render this level
-
         targets: null,
         counter: 0,
         isClicked: false,
@@ -18,7 +17,11 @@ export default class LevelContainer extends Component{
         levelEnd: false,
         firendlyBackgroundColor: '#18FCFF',
         debrisBackgroundColor: '#0B162A',
-       
+    }
+
+    //loads everything and holds setInterval loops
+    componentDidMount = () => {
+        this.runGame()    
     }
 
     //function for handling target clicks
@@ -48,6 +51,7 @@ export default class LevelContainer extends Component{
             target.isClicked = false
         }
     }
+    //translates targetString into objects
     establishTargets = (string) => {
         
         let targets = [];
@@ -63,35 +67,6 @@ export default class LevelContainer extends Component{
         this.setState({
             targets: targets
         })
-    }
-    //loads everything and holds setInterval loops
-    componentDidMount = () => {
-        //translate targets function
-        if (this.state.targets === null){
-            this.establishTargets(this.state.selectedLevel.targetString)
-        }
-        var gameLoop = setInterval(() =>{
-            this.resetTargets()
-            this.loadLevelGrid()
-            this.setState({
-                counter: this.state.counter+1
-            })
-            //conditions for level ending
-            if(this.state.counter === 5 ){
-                clearInterval(gameLoop)
-                this.setState({
-                    success: true,
-                    levelEnd: true
-                })
-            }
-            if(this.state.levelPoints < 0){
-                clearInterval(gameLoop)
-                this.setState({
-                    levelEnd: true
-                })
-            }
-        }, 2000)    
-        
     }
   
     //load the targets
@@ -130,18 +105,48 @@ export default class LevelContainer extends Component{
         </FlipMove>
     }
 
+    runGame = () => {
+        //translate targets function
+        if (this.state.targets === null){
+            this.establishTargets(this.state.selectedLevel.targetString)
+        }
+        var gameLoop = setInterval(() =>{
+            this.resetTargets()
+            this.loadLevelGrid()
+            this.setState({
+                counter: this.state.counter+1
+            })
+            //conditions for level ending
+            if(this.state.counter === 5 ){
+                clearInterval(gameLoop)
+                this.setState({
+                    success: true,
+                    levelEnd: true
+                })
+            }
+            if(this.state.levelPoints < 0){
+                clearInterval(gameLoop)
+                this.setState({
+                    levelEnd: true
+                })
+            }
+        }, this.state.selectedLevel.BPM)
+    }
+
     render() {
         if (this.state.targets === null){
             return <h1>LOADING!</h1>
         }
         if (this.state.levelEnd){
             return(
-                <LevelEnd 
-                success={this.state.success}
-                levelPoints={this.state.levelPoints}
-                levelEnd={this.state.levelEnd}
-                levelComplete={this.props.levelComplete}
-                />
+                <div className={this.props.selectedLevel.css}>
+                    <LevelEnd 
+                    success={this.state.success}
+                    levelPoints={this.state.levelPoints}
+                    levelEnd={this.state.levelEnd}
+                    levelComplete={this.props.levelComplete}
+                    />
+                </div>    
             )
         }
         return (

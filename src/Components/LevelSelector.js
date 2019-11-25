@@ -8,7 +8,7 @@ export default class LevelSelector extends Component {
     render(){
         return(
             <div>
-                <button onClick={() => this.props.loadLevel(this.props)}>{this.props.name}</button>            
+                <button className='hvr-sweep-to-right' onClick={() => this.props.loadLevel(this.props)}>{this.props.name}</button>            
             </div>
         )
     }
