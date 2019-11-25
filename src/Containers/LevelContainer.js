@@ -21,6 +21,41 @@ export default class LevelContainer extends Component{
        
     }
 
+    //loads everything and holds setInterval loops
+    componentDidMount = () => {
+        
+        this.runGame()    
+        
+    }
+
+    runGame = () => {
+        //translate targets function
+        if (this.state.targets === null){
+            this.establishTargets(this.state.selectedLevel.targetString)
+        }
+        var gameLoop = setInterval(() =>{
+            this.resetTargets()
+            this.loadLevelGrid()
+            this.setState({
+                counter: this.state.counter+1
+            })
+            //conditions for level ending
+            if(this.state.counter === 5 ){
+                clearInterval(gameLoop)
+                this.setState({
+                    success: true,
+                    levelEnd: true
+                })
+            }
+            if(this.state.levelPoints < 0){
+                clearInterval(gameLoop)
+                this.setState({
+                    levelEnd: true
+                })
+            }
+        }, this.state.selectedLevel.BPM)
+    }
+
     //function for handling target clicks
     handleClick = (name, target_type) => {
         //finds the target that was clicked
@@ -48,6 +83,7 @@ export default class LevelContainer extends Component{
             target.isClicked = false
         }
     }
+    //translates targetString into objects
     establishTargets = (string) => {
         
         let targets = [];
@@ -63,35 +99,6 @@ export default class LevelContainer extends Component{
         this.setState({
             targets: targets
         })
-    }
-    //loads everything and holds setInterval loops
-    componentDidMount = () => {
-        //translate targets function
-        if (this.state.targets === null){
-            this.establishTargets(this.state.selectedLevel.targetString)
-        }
-        var gameLoop = setInterval(() =>{
-            this.resetTargets()
-            this.loadLevelGrid()
-            this.setState({
-                counter: this.state.counter+1
-            })
-            //conditions for level ending
-            if(this.state.counter === 5 ){
-                clearInterval(gameLoop)
-                this.setState({
-                    success: true,
-                    levelEnd: true
-                })
-            }
-            if(this.state.levelPoints < 0){
-                clearInterval(gameLoop)
-                this.setState({
-                    levelEnd: true
-                })
-            }
-        }, 2000)    
-        
     }
   
     //load the targets
@@ -136,12 +143,14 @@ export default class LevelContainer extends Component{
         }
         if (this.state.levelEnd){
             return(
-                <LevelEnd 
-                success={this.state.success}
-                levelPoints={this.state.levelPoints}
-                levelEnd={this.state.levelEnd}
-                levelComplete={this.props.levelComplete}
-                />
+                <div className={this.props.selectedLevel.css}>
+                    <LevelEnd 
+                    success={this.state.success}
+                    levelPoints={this.state.levelPoints}
+                    levelEnd={this.state.levelEnd}
+                    levelComplete={this.props.levelComplete}
+                    />
+                </div>    
             )
         }
         return (

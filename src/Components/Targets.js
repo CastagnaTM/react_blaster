@@ -35,7 +35,7 @@ export default class Targets extends Component{
             return(
                 <div className='tile-target' onClick={() => this.props.handleClick(this.props.name, this.props.target_type)} style={{backgroundColor: this.props.isClicked ? '#3F1923' : this.state.friendlyBackgroundColor}}>
                     <img className='tile-img' src={this.props.isClicked ? friendlySad : friendly1}/>
-            </div>
+                </div>
             )
         }
        

@@ -21,6 +21,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  
 }
 .tile-grid {
   float: left;
@@ -28,11 +29,11 @@
   margin-left: 20px;
   margin-top: 10%;
   padding: 5px;
-  border-color: #D125DC;
+  border-color: rgba(208, 37, 220, 0.598);
   border-style: inset;
-  border-width: 5px;
+  border-width: 4px;
+  border-radius: 5px;
   background-image: url('./Assets/gridBg.png');
-  
 }
 .tile-target {
   min-width: 90px;
@@ -47,8 +48,8 @@
   border-style: solid;
   border-width: 2px;
   background-color: #18FCFF;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
+  box-shadow: 0 2px 2px 0 rgba(10, 250, 250, 0.3);
+  transition: 0.2s;
   border-radius: 5px;
 }
 .tile-img {
@@ -85,4 +86,64 @@
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
+}
+.hvr-grow {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+}
+.hvr-grow:hover, .hvr-grow:focus, .hvr-grow:active {
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+}
+@-webkit-keyframes hvr-ripple-out {
+  100% {
+    top: -12px;
+    right: -12px;
+    bottom: -12px;
+    left: -12px;
+    opacity: 0;
+  }
+}
+@keyframes hvr-ripple-out {
+  100% {
+    top: -12px;
+    right: -12px;
+    bottom: -12px;
+    left: -12px;
+    opacity: 0;
+  }
+}
+.hvr-ripple-out {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  position: relative;
+  border-radius: 4px;
+  padding: 20px;
+  font-size: 16px;
+}
+.hvr-ripple-out:before {
+  content: '';
+  position: absolute;
+  border: #223553 solid 1px;
+  border-radius: 4px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+}
+.hvr-ripple-out:hover:before, .hvr-ripple-out:focus:before, .hvr-ripple-out:active:before {
+  -webkit-animation-name: hvr-ripple-out;
+  animation-name: hvr-ripple-out;
 }
