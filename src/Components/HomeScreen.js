@@ -24,18 +24,18 @@ export default class HomeScreen extends Component{
     //also hide levels that haven't been unlocked yet
     levelSelect = () => {
         return(
-            <div>
+            <div className='home-screen-background'>
                 <div className='home-screen-header'>
-                    <h4>Select A Level</h4>
-                </div>
-                <div className='home-screen-header'>
-                    <p>{this.state.playedOnce ? `New Total Score: ${this.state.totalPoints}` : `Total Score: ${this.state.totalPoints}`}</p>
-                </div>
+                    <h4 style={{color: 'white'}}>Select A Level</h4>
+                    <p style={{color: 'white'}}>{this.state.playedOnce ? `New Total Score: ${this.state.totalPoints}` : `Total Score: ${this.state.totalPoints}`}</p>
 
-                <div className='home-screen-body'>
-                    {this.state.levels.map((level, i) => <LevelSelector key={i}{...level} 
-                    loadLevel={this.loadLevel}
-                    />)}
+                </div>
+                <div className='level-select-container'>
+                    <div className='level-select'>
+                        {this.state.levels.map((level, i) => <LevelSelector key={i}{...level} 
+                        loadLevel={this.loadLevel}
+                        />)}
+                    </div>
                 </div>
             </div>
         )

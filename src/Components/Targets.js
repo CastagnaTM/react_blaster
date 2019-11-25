@@ -23,18 +23,17 @@ export default class Targets extends Component{
     }
     
     render() {
-       
         if(this.props.target_type === 'debris'){
             return (
-                <div className='tile-target' onClick={() => this.props.handleClick(this.props.name, this.props.target_type)} style={{backgroundColor: this.props.isClicked ? '#1D9067' : this.state.debrisBackgroundColor}} >
-                    <img className='tile-img' src={this.props.isClicked ? Explosion : Satellite}/>
+                <div className='tile-target' onClick={() => this.props.handleClick(this.props.name, this.props.target_type)} style={{backgroundColor: this.props.isClicked ? '#2F8745' : this.state.debrisBackgroundColor}} >
+                    <img className='tile-img' alt="space debris" src={this.props.isClicked ? Explosion : Satellite}/>
                 </div>
             )
         } 
         if(this.props.target_type === 'friendly'){
             return(
                 <div className='tile-target' onClick={() => this.props.handleClick(this.props.name, this.props.target_type)} style={{backgroundColor: this.props.isClicked ? '#3F1923' : this.state.friendlyBackgroundColor}}>
-                    <img className='tile-img' src={this.props.isClicked ? friendlySad : friendly1}/>
+                    <img className='tile-img' alt='friendly alien' src={this.props.isClicked ? friendlySad : friendly1}/>
                 </div>
             )
         }

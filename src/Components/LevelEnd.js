@@ -15,7 +15,7 @@ export default class LevelEnd extends Component {
                             {this.props.success ? `Congrats! You Scored ${this.props.levelPoints} Points!` : 'Sorry, you lost this time around...'}
                         </p>
                     </div>
-                    <div style={{marginLeft: '170px'}}>
+                    <div>
                         <button className='hvr-ripple-out' onClick={this.handleReturn} >Return</button>
                     </div>
                 </div>

@@ -9,7 +9,6 @@ export default class LevelContainer extends Component{
 
     state = {
         selectedLevel: this.props.selectedLevel, //this should hold all info the container needs to render this level
-
         targets: null,
         counter: 0,
         isClicked: false,
@@ -18,42 +17,11 @@ export default class LevelContainer extends Component{
         levelEnd: false,
         firendlyBackgroundColor: '#18FCFF',
         debrisBackgroundColor: '#0B162A',
-       
     }
 
     //loads everything and holds setInterval loops
     componentDidMount = () => {
-        
         this.runGame()    
-        
-    }
-
-    runGame = () => {
-        //translate targets function
-        if (this.state.targets === null){
-            this.establishTargets(this.state.selectedLevel.targetString)
-        }
-        var gameLoop = setInterval(() =>{
-            this.resetTargets()
-            this.loadLevelGrid()
-            this.setState({
-                counter: this.state.counter+1
-            })
-            //conditions for level ending
-            if(this.state.counter === 5 ){
-                clearInterval(gameLoop)
-                this.setState({
-                    success: true,
-                    levelEnd: true
-                })
-            }
-            if(this.state.levelPoints < 0){
-                clearInterval(gameLoop)
-                this.setState({
-                    levelEnd: true
-                })
-            }
-        }, this.state.selectedLevel.BPM)
     }
 
     //function for handling target clicks
@@ -135,6 +103,34 @@ export default class LevelContainer extends Component{
         debrisBackgroundColor={this.state.debrisBackgroundColor}
         />)}
         </FlipMove>
+    }
+
+    runGame = () => {
+        //translate targets function
+        if (this.state.targets === null){
+            this.establishTargets(this.state.selectedLevel.targetString)
+        }
+        var gameLoop = setInterval(() =>{
+            this.resetTargets()
+            this.loadLevelGrid()
+            this.setState({
+                counter: this.state.counter+1
+            })
+            //conditions for level ending
+            if(this.state.counter === 5 ){
+                clearInterval(gameLoop)
+                this.setState({
+                    success: true,
+                    levelEnd: true
+                })
+            }
+            if(this.state.levelPoints < 0){
+                clearInterval(gameLoop)
+                this.setState({
+                    levelEnd: true
+                })
+            }
+        }, this.state.selectedLevel.BPM)
     }
 
     render() {
