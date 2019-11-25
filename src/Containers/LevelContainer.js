@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import Targets from '../Components/Targets'
 import LevelEnd from '../Components/LevelEnd'
 import FlipMove from 'react-flip-move'
+import Song from '../Assets/Audio/standIn.mp3'
+import friendlySmall from '../Assets/FriendlySmall.png'
+import friendlyStrike from '../Assets/FriendlyStrike.png'
+
+let music = new Audio(Song);
 
 export default class LevelContainer extends Component{
 
@@ -17,6 +22,7 @@ export default class LevelContainer extends Component{
         levelEnd: false,
         firendlyBackgroundColor: '#18FCFF',
         debrisBackgroundColor: '#0B162A',
+        hitFriendlyCount: 0
     }
 
     //loads everything and holds setInterval loops
@@ -39,7 +45,8 @@ export default class LevelContainer extends Component{
         if(target_type === 'friendly'){
             this.setState({
                 isClicked: true,
-                levelPoints: this.state.levelPoints-2
+                levelPoints: this.state.levelPoints-2,
+                hitFriendlyCount: this.state.hitFriendlyCount+1
             })
         }
     }
@@ -104,12 +111,20 @@ export default class LevelContainer extends Component{
         />)}
         </FlipMove>
     }
+    playMusic = () => {
+        music.play();
+    }
+
+    stopMusic = () => {
+        music.pause();
+    }
 
     runGame = () => {
         //translate targets function
         if (this.state.targets === null){
             this.establishTargets(this.state.selectedLevel.targetString)
         }
+        this.playMusic();
         var gameLoop = setInterval(() =>{
             this.resetTargets()
             this.loadLevelGrid()
@@ -117,14 +132,14 @@ export default class LevelContainer extends Component{
                 counter: this.state.counter+1
             })
             //conditions for level ending
-            if(this.state.counter === 5 ){
+            if(this.state.counter === 16 ){
                 clearInterval(gameLoop)
                 this.setState({
                     success: true,
                     levelEnd: true
                 })
             }
-            if(this.state.levelPoints < 0){
+            if(this.state.levelPoints < 0 || this.state.hitFriendlyCount === 3){
                 clearInterval(gameLoop)
                 this.setState({
                     levelEnd: true
@@ -150,14 +165,28 @@ export default class LevelContainer extends Component{
             )
         }
         return (
-            <div className={this.props.selectedLevel.css}>    
+
+            <div className={this.props.selectedLevel.css}>
                 <div className='tile-grid-container'>
                     <div className='tile-grid'>
                         {this.renderTargets()}
                     </div>
                 </div>
-                <div className='level-score'>
-                    <p style={{color:'whitesmoke', textAlign: 'center'}}>Score: {this.state.levelPoints}</p>
+                <div className='score-container'>
+                    <div className='strikes'>   
+                        <div className='strikes-tile'>
+                            <img className='stikes-img' src={this.state.hitFriendlyCount >= 1 ? friendlyStrike : friendlySmall}></img>
+                        </div>
+                        <div className='strikes-tile'>
+                            <img className='stikes-img' src={this.state.hitFriendlyCount >= 2 ? friendlyStrike : friendlySmall}></img>
+                        </div>
+                        <div className='strikes-tile'>        
+                            <img className='stikes-img' src={this.state.hitFriendlyCount === 3 ? friendlyStrike : friendlySmall}></img>
+                        </div>
+                    </div> 
+                    <div className='level-score'>
+                        <p style={{color:'whitesmoke', textAlign: 'center'}}>Score: {this.state.levelPoints}</p>
+                    </div>
                 </div>
             </div>
             
