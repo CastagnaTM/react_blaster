@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import LevelContainer from '../Containers/LevelContainer'
-import LevelSelector from '../Components/LevelSelector'
+import LevelSelector from './LevelSelector'
+import Shoppe from './Shoppe'
 import friendlySmall from '../Assets/FriendlySmall.png'
 import satelliteIcon from '../Assets/SatelliteIcon.png'
 import BombIcon from '../Assets/BombIcon.png'
+import ShoppeIcon from '../Assets/ShoppeIcon.png'
 
 
 //this component holds the homescreen, including level selection and potentially other options
@@ -16,7 +18,9 @@ export default class HomeScreen extends Component{
         selectedLevel: null,
         totalPoints: 0,
         playedOnce: false,
-        health: 4
+        health: 4,
+        levelsCompleted: 0,
+        shoppeView: false
     }
 
     //calls the fetch to load level options
@@ -27,20 +31,57 @@ export default class HomeScreen extends Component{
     //renders buttons for each load-able level
     //add abiltity to load different difficulties with different formats
     //also hide levels that haven't been unlocked yet
+
+    getLevelButtons = () => {
+       let buttonArray = this.state.levels.map((level, i) => <LevelSelector key={i}{...level} 
+        loadLevel={this.loadLevel}
+        />)
+        return buttonArray[this.state.levelsCompleted]
+    }
+    
+    handleShoppe = () => {
+        this.setState({
+            shoppeView: true
+        })
+    }
+
+    handlePurchase = () => {
+        if(this.state.totalPoints >= 50){
+            this.setState({
+                health: 4,
+                totalPoints: this.state.totalPoints - 50
+            })
+        }
+        //some sort of response if you don't have enough money
+        // preferably a popup, 
+    }
+
+    loadShoppe = () => {
+        return(
+            <Shoppe 
+            handlePurchase={this.handlePurchase}
+            points={this.state.totalPoints} />
+        )    
+    }
     levelSelect = () => {
         return(
             <div className='home-screen-background'>
                 <div className='home-screen-header'>
-                    <h4 style={{color: 'white'}}>Select A Level</h4>
-                    <p style={{color: 'white'}}>{this.state.playedOnce ? `New Total Score: ${this.state.totalPoints}` : `Total Score: ${this.state.totalPoints}`}</p>
-                    <p style={{color: 'white'}}>Health: {this.state.health}</p>
+                    <p style={{color: 'white', marginRight: '2%'}}>{this.state.playedOnce ? `New Total Score: ${this.state.totalPoints}` : `Total Score: ${this.state.totalPoints}`}</p>
+                    <p style={{color: 'white', marginRight: '2%'}}>Health: {this.state.health}</p>
                 </div>
+                
                 <div className='home-screen-column'>
+                <div style={{marginLeft: '8%'}}>
+                    <button 
+                        className='hvr-overline-from-right'
+                        onClick={this.handleShoppe}>
+                        <img src={ShoppeIcon}/>
+                    </button>
+                </div>
                     <div className='level-select-container'>
                         <div className='level-select'>
-                            {this.state.levels.map((level, i) => <LevelSelector key={i}{...level} 
-                            loadLevel={this.loadLevel}
-                            />)}
+                            {this.getLevelButtons()}
                         </div>
                     </div>
                     <div className='instructions'>
@@ -100,7 +141,8 @@ export default class HomeScreen extends Component{
             this.setState({
             totalPoints: this.state.totalPoints + levelPoints,
             health: health,
-            playedOnce: true
+            playedOnce: true,
+            levelsCompleted: this.state.levelsCompleted + 1
             })
         }
         this.setState({
@@ -110,16 +152,19 @@ export default class HomeScreen extends Component{
 
     render() {
         //until a level is selected, show the levels avaiable
-        if (this.state.playLevel === false){
+        if (this.state.playLevel === false && this.state.shoppeView === false){
             return (
                 this.levelSelect()
             )
         } 
         //after selected a level, render the level
-        else {
+        else if (this.state.playLevel === true && this.state.shoppeView === false) {
             return (
                 this.play()
             )
+        }
+        else if (this.state.shoppeView === true && this.state.playLevel === false){
+            return this.loadShoppe()
         }
     }
         
