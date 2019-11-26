@@ -2,11 +2,17 @@ import React, { Component } from 'react';
 import Targets from '../Components/Targets'
 import LevelEnd from '../Components/LevelEnd'
 import FlipMove from 'react-flip-move'
-import Song from '../Assets/Audio/standIn.mp3'
+import LevelOneSong from '../Assets/Audio/standIn.mp3'
 import friendlySmall from '../Assets/FriendlySmall.png'
 import friendlyStrike from '../Assets/FriendlyStrike.png'
+import healthFull from '../Assets/HealthFull.png'
+import health3 from '../Assets/Health3.png'
+import health2 from '../Assets/Health2.png'
+import health1 from '../Assets/Health1.png'
+import healthEmpty from '../Assets/HealthEmpty.png'
+let music = new Audio(LevelOneSong)
+let health = healthFull;
 
-let music = new Audio(Song);
 
 export default class LevelContainer extends Component{
 
@@ -14,6 +20,7 @@ export default class LevelContainer extends Component{
 
     state = {
         selectedLevel: this.props.selectedLevel, //this should hold all info the container needs to render this level
+        health: this.props.health,
         targets: null,
         counter: 0,
         isClicked: false,
@@ -49,6 +56,13 @@ export default class LevelContainer extends Component{
                 hitFriendlyCount: this.state.hitFriendlyCount+1
             })
         }
+        if(target_type === 'bomb'){
+            this.setState({
+                isClicked: true,
+                health: this.state.health-1
+            })
+            console.log(this.state.health)
+        }
     }
 
     // resets the state for targets, used for setInterval loop
@@ -69,6 +83,9 @@ export default class LevelContainer extends Component{
             }
             else if(targetArray[i] === '1'){
                 targets.push({name: i, target_type: 'friendly', isClicked: false})
+            }
+            else if(targetArray[i] === '2'){
+                targets.push({name: i, target_type: 'bomb', isClicked: false})
             }
         }
         this.setState({
@@ -117,6 +134,25 @@ export default class LevelContainer extends Component{
 
     stopMusic = () => {
         music.pause();
+        music.currentTime = 0.0;
+    }
+
+    getHealth = () => {
+        if(this.state.health === 4){
+            return healthFull;
+        }
+        else if (this.state.health === 3){
+            return health3;
+        }
+        else if(this.state.health === 2){
+            return health2;
+        }
+        else if (this.state.health === 1){
+            return health1;
+        }
+        else{
+            return healthEmpty;
+        }
     }
 
     runGame = () => {
@@ -132,15 +168,18 @@ export default class LevelContainer extends Component{
                 counter: this.state.counter+1
             })
             //conditions for level ending
-            if(this.state.counter === 16 ){
+            if(this.state.counter === 16 ){ //add condition for winning: a certain number of points needed per level
                 clearInterval(gameLoop)
+                this.stopMusic()
                 this.setState({
                     success: true,
                     levelEnd: true
                 })
             }
-            if(this.state.levelPoints < 0 || this.state.hitFriendlyCount === 3){
+            if(this.state.levelPoints < 0 || this.state.hitFriendlyCount === 3
+                || this.state.health === 0){
                 clearInterval(gameLoop)
+                this.stopMusic()
                 this.setState({
                     levelEnd: true
                 })
@@ -155,7 +194,8 @@ export default class LevelContainer extends Component{
         if (this.state.levelEnd){
             return(
                 <div className={this.props.selectedLevel.css}>
-                    <LevelEnd 
+                    <LevelEnd
+                    health={this.state.health} 
                     success={this.state.success}
                     levelPoints={this.state.levelPoints}
                     levelEnd={this.state.levelEnd}
@@ -167,9 +207,17 @@ export default class LevelContainer extends Component{
         return (
 
             <div className={this.props.selectedLevel.css}>
-                <div className='tile-grid-container'>
-                    <div className='tile-grid'>
-                        {this.renderTargets()}
+                <div className='level-column'>
+                    <div className='health-container'>
+                        <img className='health-img' src={this.getHealth()}></img>
+                    </div>
+                    <div className='game-play-container'>
+                        <div className='tile-grid-container'>
+                            <div className='tile-grid'>
+                                {this.renderTargets()}
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
                 <div className='score-container'>
@@ -187,9 +235,11 @@ export default class LevelContainer extends Component{
                     <div className='level-score'>
                         <p style={{color:'whitesmoke', textAlign: 'center'}}>Score: {this.state.levelPoints}</p>
                     </div>
-                </div>
+                </div> 
             </div>
             
         )
     }
 }
+
+{/* */}

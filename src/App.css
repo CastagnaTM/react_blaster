@@ -12,22 +12,22 @@
   height: 100vh;
   width: 100%;
 }
-.column {
-  display: flex;
-  float: left;
-  width: 90%;
-  margin-left: 5%;
-  margin-top: 5%;
-}
 .home-screen-header {
   text-align: center;
   background-color:rgb(12, 12, 12);
   border-bottom: 2px solid black;
   margin-bottom: 2%;
 }
+.home-screen-column {
+  display: flex;
+  float: left;
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 5%;
+}
 .instructions {
   display: flex;
-  width: 30%;
+  width: 28%;
   height: auto;
   margin-left: 8%;
   justify-content: center;
@@ -119,6 +119,74 @@
   transform: scaleX(1);
 }
 /* Game Display! */
+.level-column {
+  display: flex;
+  float: left;
+  width: 100%;
+  margin-left: 1%;
+  margin-top: 8%;
+}
+.health-container {
+  display: flex;
+  max-height: 50%;
+  margin-top: 4%;
+  margin-left: 22%;
+  
+}
+.health-img {
+  max-height: 80%;
+  max-width: 100%;
+}
+.game-play-container {
+  display: flex;
+  float: left;
+  width: 50%;
+  height: auto;
+  margin-left: -3%;
+}
+.tile-grid-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 94%;
+}
+.tile-grid {
+  float: left;
+  width: 84%; 
+  margin-top: 4%;
+  margin-left: 1%;
+  margin-right: 1%;
+  /* padding-left: 2px; */
+  border-top: inset #7D1F87 4px;
+  border-left: inset #7D1F87 4px;
+  box-shadow: 3px 3px 0px 0px #009994;
+  border-radius: 5px;
+  background-image: url('./Assets/gridBg.png');
+}
+.tile-target {
+  min-width: 24%;
+  max-width: 24%;
+  min-height: 24%;
+  max-height: 24%;
+  float: left;
+  margin-left: 2%;
+  margin-right: 1%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  padding: 15px;
+  border-color: #223553;
+  border-style: solid;
+  border-width: 2px;
+  background-color: #18FCFF;
+  box-shadow: -1px -1px #009994; 
+  transition: 0.2s;
+  border-radius: 5px;
+  cursor: url('./Assets/mouseTarget.png'), auto;
+}
+.tile-img {
+  max-width: 100%;
+  max-height: 20%;
+}
 .score-container {
   margin-top: 1%;
   align-items: center;
@@ -132,7 +200,7 @@
   justify-content: center;
   width: 15%;
   height: auto;
-  margin-left: 25%;
+  margin-left: 15%;
   background-color: #223553;
   border-color: #344257;
   border-style: ridge;
@@ -164,57 +232,16 @@
   align-items: center;
   justify-content: center;
   width: 15%;
-  margin-left: 1%;
+  height: 10%;
+  position: relative;
+  /* margin-top: 40%; */
+  margin-left: 2%;
   background-color: #223553;
   border-color: #344257;
   border-style: ridge;
   border-width: 3px;
   border-radius: 2px;
 }
-.tile-grid-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
- 
-}
-.tile-grid {
-  float: left;
-  width: 40%; 
-  margin-top: 4%;
-  margin-left: 4%;
-  margin-right: 4%;
-  padding: 5px;
-  border-top: inset #7D1F87 4px;
-  border-left: inset #7D1F87 4px;
-  box-shadow: 3px 3px 0px 0px #009994;
-  border-radius: 5px;
-  background-image: url('./Assets/gridBg.png');
-}
-.tile-target {
-  min-width: 24%;
-  max-width: 24%;
-  min-height: 24%;
-  max-height: 24%;
-  float: left;
-  margin-left: 2%;
-  margin-right: 2%;
-  margin-top: 2%;
-  margin-bottom: 2%;
-  padding: 10px;
-  border-color: #223553;
-  border-style: solid;
-  border-width: 2px;
-  background-color: #18FCFF;
-  box-shadow: -1px -1px #009994; 
-  transition: 0.2s;
-  border-radius: 5px;
-  cursor: url('./Assets/mouseTarget.png'), auto;
-}
-.tile-img {
-  max-width: 100%;
-  max-height: 20%;
-}
-
 .level-one {
   background-image: url('./Assets/levelOneBg.jpg');
   background-position: center;
@@ -265,7 +292,8 @@
   padding: 20px;
   font-size: 16px;
   background-color: rgb(189, 195, 218);
-  margin-left: 42%
+  margin-left: 42%;
+  margin-bottom: 2%;
 }
 .hvr-ripple-out:before {
   content: '';
@@ -282,4 +310,26 @@
 .hvr-ripple-out:hover:before, .hvr-ripple-out:focus:before, .hvr-ripple-out:active:before {
   -webkit-animation-name: hvr-ripple-out;
   animation-name: hvr-ripple-out;
+}
+/* level end */
+.level-end-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+  margin-left: 25%;
+  padding: 2%
+}
+.level-end-grid {
+  float: left;
+  width: 84%; 
+  margin-top: 15%;
+  margin-left: 1%;
+  margin-right: 1%;
+  padding: 4%;
+  border-top: inset #7D1F87 4px;
+  border-left: inset #7D1F87 4px;
+  box-shadow: 3px 3px 0px 0px #009994;
+  border-radius: 5px;
+  background-image: url('./Assets/gridBg.png');
 }

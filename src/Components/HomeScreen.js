@@ -15,7 +15,8 @@ export default class HomeScreen extends Component{
         levels: [],
         selectedLevel: null,
         totalPoints: 0,
-        playedOnce: false
+        playedOnce: false,
+        health: 4
     }
 
     //calls the fetch to load level options
@@ -32,9 +33,9 @@ export default class HomeScreen extends Component{
                 <div className='home-screen-header'>
                     <h4 style={{color: 'white'}}>Select A Level</h4>
                     <p style={{color: 'white'}}>{this.state.playedOnce ? `New Total Score: ${this.state.totalPoints}` : `Total Score: ${this.state.totalPoints}`}</p>
-
+                    <p style={{color: 'white'}}>Health: {this.state.health}</p>
                 </div>
-                <div className='column'>
+                <div className='home-screen-column'>
                     <div className='level-select-container'>
                         <div className='level-select'>
                             {this.state.levels.map((level, i) => <LevelSelector key={i}{...level} 
@@ -47,12 +48,12 @@ export default class HomeScreen extends Component{
                             <h3 className='text'>Instructions</h3>
                             <p className='text'>You Have 30 seconds to:</p>
                             <div className='instructions-icons'>
-                                <img className='stikes-img' src={friendlySmall}></img>
-                                <p className='text'>Don't Shoot These</p>
-                            </div>
-                            <div className='instructions-icons'>
                                 <img className='stikes-img' src={satelliteIcon}></img>
                                 <p className='text'>Shoot These</p>
+                            </div>
+                            <div className='instructions-icons'>
+                                <img className='stikes-img' src={friendlySmall}></img>
+                                <p className='text'>But Not These</p>
                             </div>
                             <div className='instructions-icons'>
                                 <img className='stikes-img' src={BombIcon}></img>
@@ -87,16 +88,18 @@ export default class HomeScreen extends Component{
     play = () => {
         return (
             <LevelContainer 
+            health={this.state.health}
             selectedLevel={this.state.selectedLevel}
             levelComplete={this.levelComplete}
             />
         )
     }
 
-    levelComplete = (completed, levelPoints) =>{
+    levelComplete = (completed, levelPoints, health) =>{
         if (completed === true){
             this.setState({
             totalPoints: this.state.totalPoints + levelPoints,
+            health: health,
             playedOnce: true
             })
         }
