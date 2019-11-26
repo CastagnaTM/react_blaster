@@ -16,7 +16,8 @@ export default class HomeScreen extends Component{
         selectedLevel: null,
         totalPoints: 0,
         playedOnce: false,
-        health: 4
+        health: 4,
+        levelsCompleted: 0
     }
 
     //calls the fetch to load level options
@@ -27,6 +28,14 @@ export default class HomeScreen extends Component{
     //renders buttons for each load-able level
     //add abiltity to load different difficulties with different formats
     //also hide levels that haven't been unlocked yet
+
+    getLevelButtons = () => {
+       let buttonArray = this.state.levels.map((level, i) => <LevelSelector key={i}{...level} 
+        loadLevel={this.loadLevel}
+        />)
+        return buttonArray[this.state.levelsCompleted]
+    }
+
     levelSelect = () => {
         return(
             <div className='home-screen-background'>
@@ -38,9 +47,7 @@ export default class HomeScreen extends Component{
                 <div className='home-screen-column'>
                     <div className='level-select-container'>
                         <div className='level-select'>
-                            {this.state.levels.map((level, i) => <LevelSelector key={i}{...level} 
-                            loadLevel={this.loadLevel}
-                            />)}
+                            {this.getLevelButtons()}
                         </div>
                     </div>
                     <div className='instructions'>
@@ -100,7 +107,8 @@ export default class HomeScreen extends Component{
             this.setState({
             totalPoints: this.state.totalPoints + levelPoints,
             health: health,
-            playedOnce: true
+            playedOnce: true,
+            levelsCompleted: this.state.levelsCompleted + 1
             })
         }
         this.setState({
