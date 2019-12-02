@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import FlipMove from 'react-flip-move'
 import Targets from '../Components/Targets'
 import LevelEnd from '../Components/LevelEnd'
-import FlipMove from 'react-flip-move'
-import LevelOneSong from '../Assets/Audio/standIn.mp3'
 import friendlySmall from '../Assets/FriendlySmall.png'
 import friendlyStrike from '../Assets/FriendlyStrike.png'
 import healthFull from '../Assets/HealthFull.png'
@@ -10,8 +9,8 @@ import health3 from '../Assets/Health3.png'
 import health2 from '../Assets/Health2.png'
 import health1 from '../Assets/Health1.png'
 import healthEmpty from '../Assets/HealthEmpty.png'
-let music = new Audio(LevelOneSong)
-let health = healthFull;
+import levelOne from '../Assets/Audio/levelOne.mp3'
+let music;
 
 
 export default class LevelContainer extends Component{
@@ -20,10 +19,12 @@ export default class LevelContainer extends Component{
 
     state = {
         selectedLevel: this.props.selectedLevel, //this should hold all info the container needs to render this level
+        blasterPower: this.props.blasterPower,
         health: this.props.health,
+        maxHealth: this.props.maxHealth,
         targets: null,
         counter: 0,
-        isClicked: false,
+        isClicked: 0,
         levelPoints: 0,
         success: false,
         levelEnd: false,
@@ -34,34 +35,61 @@ export default class LevelContainer extends Component{
 
     //loads everything and holds setInterval loops
     componentDidMount = () => {
+        music = new Audio(this.getMusic())
+        
         this.runGame()    
+    }
+    getMusic = () => {
+        switch (this.state.selectedLevel.name){
+            case 'Level One':
+                return levelOne
+            default:
+                return levelOne
+        }
     }
 
     //function for handling target clicks
     handleClick = (name, target_type) => {
+        console.log(this.state.blasterPower)
         //finds the target that was clicked
         let thisTarget = this.state.targets.find(target => target.name === name)
-        thisTarget.isClicked = true
-        //conditional for responding to target type
-        if(target_type === 'debris'){
-            this.setState({
-                isClicked: true,
-                levelPoints: this.state.levelPoints+1
-            })
+        if(target_type !== 'asteroid'){
+            if(thisTarget.isClicked === 0){
+                thisTarget.isClicked = 1
+                //conditional for responding to target type
+                if(target_type === 'debris'){
+                    this.setState({
+                        isClicked: 1,
+                        levelPoints: this.state.levelPoints+1
+                    })
+                }
+                if(target_type === 'friendly'){
+                    this.setState({
+                        isClicked: 1,
+                        levelPoints: this.state.levelPoints-2,
+                        hitFriendlyCount: this.state.hitFriendlyCount+1
+                    })
+                }
+                if(target_type === 'bomb'){
+                    this.setState({
+                        isClicked: 1,
+                        health: this.state.health-1
+                    })
+                }
+            }
         }
-        if(target_type === 'friendly'){
-            this.setState({
-                isClicked: true,
-                levelPoints: this.state.levelPoints-2,
-                hitFriendlyCount: this.state.hitFriendlyCount+1
-            })
-        }
-        if(target_type === 'bomb'){
-            this.setState({
-                isClicked: true,
-                health: this.state.health-1
-            })
-            console.log(this.state.health)
+        else if(target_type === 'asteroid'){
+            if(thisTarget.isClicked < 2){
+                thisTarget.isClicked += this.state.blasterPower;
+                this.setState({
+                    isClicked: this.state.isClicked + this.state.blasterPower
+                })
+                if(thisTarget.isClicked >= 2){
+                    this.setState({
+                        levelPoints: this.state.levelPoints+3
+                    })
+                }
+            }        
         }
     }
 
@@ -69,7 +97,7 @@ export default class LevelContainer extends Component{
     resetTargets = () => {
         let targetsCopy = [...this.state.targets];
         for(const target of targetsCopy){
-            target.isClicked = false
+            target.isClicked = 0
         }
     }
     //translates targetString into objects
@@ -79,13 +107,16 @@ export default class LevelContainer extends Component{
         let targetArray = string.split('');
         for (let i = 0; i < targetArray.length; i++){
             if(targetArray[i] === '0'){
-                targets.push({name: i, target_type: 'debris', isClicked: false})
+                targets.push({name: i, target_type: 'debris', isClicked: 0})
             }
             else if(targetArray[i] === '1'){
-                targets.push({name: i, target_type: 'friendly', isClicked: false})
+                targets.push({name: i, target_type: 'friendly', isClicked: 0})
             }
             else if(targetArray[i] === '2'){
-                targets.push({name: i, target_type: 'bomb', isClicked: false})
+                targets.push({name: i, target_type: 'bomb', isClicked: 0})
+            }
+            else if(targetArray[i] === '3'){
+                targets.push({name: i, target_type: 'asteroid', isClicked: 0})
             }
         }
         this.setState({
@@ -138,16 +169,16 @@ export default class LevelContainer extends Component{
     }
 
     getHealth = () => {
-        if(this.state.health === 4){
+        if(this.state.health === this.state.maxHealth){
             return healthFull;
         }
-        else if (this.state.health === 3){
+        else if (this.state.health === (this.state.maxHealth * 0.75)){
             return health3;
         }
-        else if(this.state.health === 2){
+        else if(this.state.health === (this.state.maxHealth * 0.5)){
             return health2;
         }
-        else if (this.state.health === 1){
+        else if (this.state.health === (this.state.maxHealth * 0.25)){
             return health1;
         }
         else{
@@ -168,7 +199,7 @@ export default class LevelContainer extends Component{
                 counter: this.state.counter+1
             })
             //conditions for level ending
-            if(this.state.counter === 16 ){ //add condition for winning: a certain number of points needed per level
+            if(this.state.counter === 16 && this.state.levelPoints >= this.state.selectedLevel.goal){ //add condition for winning: a certain number of points needed per level
                 clearInterval(gameLoop)
                 this.stopMusic()
                 this.setState({
@@ -176,7 +207,7 @@ export default class LevelContainer extends Component{
                     levelEnd: true
                 })
             }
-            if(this.state.levelPoints < 0 || this.state.hitFriendlyCount === 3
+            else if(this.state.counter === 16 || this.state.levelPoints < 0 || this.state.hitFriendlyCount === 3
                 || this.state.health === 0){
                 clearInterval(gameLoop)
                 this.stopMusic()
@@ -241,5 +272,3 @@ export default class LevelContainer extends Component{
         )
     }
 }
-
-{/* */}
