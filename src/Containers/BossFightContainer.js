@@ -171,13 +171,13 @@ export default class BossFightContainer extends Component{
         if(this.state.health === this.state.maxHealth){
             return healthFull;
         }
-        else if (this.state.health === (this.state.maxHealth * 0.75)){
+        else if (this.state.health >= (this.state.maxHealth * 0.75) && this.state.health < (this.state.maxHealth)){
             return health3;
         }
-        else if(this.state.health === (this.state.maxHealth * 0.5)){
+        else if(this.state.health >= (this.state.maxHealth * 0.5) && this.state.health < (this.state.maxHealth * 0.75)){
             return health2;
         }
-        else if (this.state.health === (this.state.maxHealth * 0.25)){
+        else if (this.state.health > 0 && this.state.health < (this.state.maxHealth * 0.5)){
             return health1;
         }
         else{
@@ -289,7 +289,9 @@ export default class BossFightContainer extends Component{
                     </div>
                     <div className='score-container'>
                         <div className='level-score'>
-                            <p style={{color:'whitesmoke', textAlign: 'center'}}>Score: {this.state.levelPoints}</p>
+                            <p style={{color:'whitesmoke', textAlign: 'center'}}>
+                                {this.state.bossView ? 'Boss Health: ' + this.state.bossHealth : 'Score:' + this.state.levelPoints}
+                                </p>
                         </div>
                     </div> 
                 </div> 

@@ -5,15 +5,18 @@
 }
 /* 
 *
-*/
-/* Home Screen Stuff! */
+*
+ Home Screen Stuff! */
 .home-screen-background{
   background-image: url('./Assets/homeBG.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  margin: 0%;
   height: 100vh;
-  width: 100%;
 }
 .home-screen-header {
   text-align: right;
@@ -106,6 +109,20 @@
   box-shadow: 3px 3px 0px 0px #006461;
   border-radius: 4px;
 }
+.info-container {
+  max-width: 95%;
+  max-height: 95%;
+  margin-left: 2%;
+}
+.gif-container {
+  max-width: 95%;
+  max-height: 95%;
+  margin-left: 5%;
+}
+.level-gif {
+  max-width: 95%;
+  max-height: 95%;
+}
 .hvr-sweep-to-right {
   margin-left: -40%;
   vertical-align: middle;
@@ -164,13 +181,14 @@
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
   margin-bottom: 4%;
+  margin-left: 10%;
   border-radius: 4px;
-  padding: 10%;
+  padding: 20px;
   font-size: 18px;
   background-color: #5B6687;
   border-color: rgb(165, 158, 169);
-  min-width: 100%;
-  max-width: 100%;
+  min-width: 80%;
+  max-width: 80%;
 }
 .hvr-sweep-to-right-start:before {
   content: "";
@@ -209,6 +227,13 @@
   width: 100%;
   margin-left: 1%;
   margin-top: 8%;
+}
+.level-three-column {
+  display: flex;
+  float: left;
+  width: 100%;
+  margin-left: 1%;
+  margin-top: 4%;
 }
 .health-container {
   display: flex;
