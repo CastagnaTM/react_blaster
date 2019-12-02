@@ -22,22 +22,24 @@ export default class BossFightContainer extends Component{
         maxHealth: this.props.maxHealth,
         targets: null,
         boss: [{name: 'Boss', target_type: 'boss', isClicked: 100}],
+        counter: 0,
         isClicked: 0,
         levelPoints: 0,
         bossHealth: 100,
+        defensesDestroyed: 0,
         success: false,
         levelEnd: false,
         firendlyBackgroundColor: '#18FCFF',
         debrisBackgroundColor: '#0B162A',
-        hitFriendlyCount: 0
+        hitFriendlyCount: 0,
+        bossView: false
     }
     
 
     //loads everything and holds setInterval loops
     componentDidMount = () => {
         music = new Audio(this.getMusic())
-        
-        this.runGame()    
+        this.state.bossView ? this.runBoss() : this.runGame();    
     }
     getMusic = () => {
         switch (this.state.selectedLevel.name){
@@ -70,25 +72,30 @@ export default class BossFightContainer extends Component{
                 })
                 if(thisTarget.isClicked >= 2){
                     this.setState({
-                        levelPoints: this.state.levelPoints+1000
+                        levelPoints: this.state.levelPoints+3,
+                        defensesDestroyed: this.state.defensesDestroyed+1
                     })
                 }
             }        
         }
-        if(target_type === 'boss'){
-            if(thisTarget.isClicked > 0){
-                thisTarget.isClicked -= this.state.blasterPower;
+    }
+
+    handleBossClick = (name) => {
+        let thisTarget = this.state.boss.find(boss => boss.name === name)
+        console.log(this.state.bossHealth)
+        if(thisTarget.isClicked > 0){
+            thisTarget.isClicked -= this.state.blasterPower;
+            this.setState({
+                bossHealth: this.state.bossHealth - this.state.blasterPower
+            })
+            if(thisTarget.isClicked <= 0){
                 this.setState({
-                    bossHealth: this.state.bossHealth - this.state.blasterPower
+                    levelPoints: this.state.levelPoints+1000
+                    //call winning condition
                 })
-                if(thisTarget.isClicked <= 0){
-                    this.setState({
-                        levelPoints: this.state.levelPoints+3
-                        //call winning condition
-                    })
-                }
             }
         }
+        // console.log(this.state.bossHealth)
     }
 
     // resets the state for targets, used for setInterval loop
@@ -137,6 +144,7 @@ export default class BossFightContainer extends Component{
 
     // passes the targets to the Target component
     renderTargets = () => {
+        
         return <FlipMove
         staggerDelayBy={100}
         appearAnimation="elevator"
@@ -178,24 +186,21 @@ export default class BossFightContainer extends Component{
     }
 
     runGame = () => {
-        //translate targets function
+        this.playMusic();
+        //debris game loop
         if (this.state.targets === null){
             this.establishTargets(this.state.selectedLevel.targetString)
         }
-
-        this.playMusic();
-        //debris game loop
-        this.runGameLoop();
-    }
-    //debris game loop
-    runGameLoop = () => {
         var gameLoop = setInterval(() =>{
             this.resetTargets()
             this.loadLevelGrid()
-        
             //conditions for debris loop ending
-            if(this.state.levelPoints % 36 === 0){ //add condition for winning: a certain number of points needed per level
-                clearInterval(gameLoop)
+            if(this.state.defensesDestroyed >= 12){ // this condition needs to change
+                this.setState({
+                    bossView: true,
+                    defensesDestroyed: 0
+                })
+                this.runBoss();
             }
             //leaving first two conditions for weakened boss mode stretch goal
             else if(this.state.levelPoints < 0 || this.state.hitFriendlyCount === 3
@@ -208,16 +213,23 @@ export default class BossFightContainer extends Component{
             }
         }, this.state.selectedLevel.BPM)
     }
+    
     // Function for displaying boss on screen
     runBoss = () => {
         //render boss -- load Targets component with a single boss target? use satellite as stand in for now
-        this.renderBoss();
-
+        var bossLoop = setInterval(() => {
+            this.setState({
+                counter: this.state.counter+1
+            })
+            if(this.state.counter % 2 === 0){
+                clearInterval(bossLoop)
+                this.setState({
+                    bossView: false
+                })
+            }
+        }, 2000)
     }
     renderBoss = () => {
-        this.setState({
-            targets: null
-        })
         return <FlipMove
         staggerDelayBy={100}
         appearAnimation="elevator"
@@ -225,9 +237,10 @@ export default class BossFightContainer extends Component{
         leaveAnimation="fade"
         >
         {this.state.boss.map(boss => <Targets 
-        handleClick={this.handleClick} key={boss.name}{...boss}
+        handleBossClick={this.handleBossClick} key={boss.name}{...boss}
         />)}
         </FlipMove>
+        
     }
 
     render() {
@@ -247,29 +260,33 @@ export default class BossFightContainer extends Component{
                 </div>    
             )
         }
-        return (
+        else {
 
-            <div className={this.props.selectedLevel.css}>
-                <div className='level-column'>
-                    <div className='health-container'>
-                        <img className='health-img' src={this.getHealth()}></img>
-                    </div>
-                    <div className='game-play-container'>
-                        <div className='tile-grid-container'>
-                            <div className='tile-grid'>
-                                {this.renderTargets()}
-                            </div>
+            return (
+                <div className={this.props.selectedLevel.css}>
+                    <div className='level-column'>
+                        <div className='health-container'>
+                            <img className='health-img' src={this.getHealth()} alt="health meter"></img>
                         </div>
-                        
+                        <div className='game-play-container'>
+                            <div className='tile-grid-container'>
+                                <div className='tile-grid' style={{display: this.state.bossView ? 'none' : 'block'}}>
+                                    {this.renderTargets()}
+                                </div>
+                                <div className='tile-grid' style={{display: this.state.bossView ? 'block' : 'none'}}>
+                                    {this.renderBoss()}
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
-                </div>
-                <div className='score-container'>
-                    <div className='level-score'>
-                        <p style={{color:'whitesmoke', textAlign: 'center'}}>Score: {this.state.levelPoints}</p>
-                    </div>
+                    <div className='score-container'>
+                        <div className='level-score'>
+                            <p style={{color:'whitesmoke', textAlign: 'center'}}>Score: {this.state.levelPoints}</p>
+                        </div>
+                    </div> 
                 </div> 
-            </div>
-            
-        )
+            )
+        }
     }
 }

@@ -240,7 +240,7 @@ export default class LevelContainer extends Component{
             <div className={this.props.selectedLevel.css}>
                 <div className='level-column'>
                     <div className='health-container'>
-                        <img className='health-img' src={this.getHealth()}></img>
+                        <img className='health-img' src={this.getHealth()} alt="health meter"></img>
                     </div>
                     <div className='game-play-container'>
                         <div className='tile-grid-container'>
@@ -254,13 +254,13 @@ export default class LevelContainer extends Component{
                 <div className='score-container'>
                     <div className='strikes'>   
                         <div className='strikes-tile'>
-                            <img className='stikes-img' src={this.state.hitFriendlyCount >= 1 ? friendlyStrike : friendlySmall}></img>
+                            <img className='stikes-img' src={this.state.hitFriendlyCount >= 1 ? friendlyStrike : friendlySmall} alt="alien strikes"></img>
                         </div>
                         <div className='strikes-tile'>
-                            <img className='stikes-img' src={this.state.hitFriendlyCount >= 2 ? friendlyStrike : friendlySmall}></img>
+                            <img className='stikes-img' src={this.state.hitFriendlyCount >= 2 ? friendlyStrike : friendlySmall} alt="alien strikes"></img>
                         </div>
                         <div className='strikes-tile'>        
-                            <img className='stikes-img' src={this.state.hitFriendlyCount === 3 ? friendlyStrike : friendlySmall}></img>
+                            <img className='stikes-img' src={this.state.hitFriendlyCount === 3 ? friendlyStrike : friendlySmall} alt="alien strikes"></img>
                         </div>
                     </div> 
                     <div className='level-score'>

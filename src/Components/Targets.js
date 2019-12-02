@@ -49,8 +49,8 @@ export default class Targets extends Component{
         }
         if(this.props.target_type === 'boss'){
             return (
-                <div className='tile-target' onClick={() => this.props.handleClick(this.props.name, this.props.target_type)} style={{backgroundColor: this.props.isClicked ? '#2F8745' : this.state.debrisBackgroundColor}} >
-                    <img className='tile-img' alt="boss" src={this.props.isClicked >= 100 ? Explosion : Satellite}/>
+                <div className='boss-target' onClick={() => this.props.handleBossClick(this.props.name)} style={{backgroundColor: this.props.isClicked ?  this.state.debrisBackgroundColor : '#2F8745'}} >
+                    <img className='boss-img' alt="boss" src={this.props.isClicked <= 0 ? Explosion : Satellite}/>
                 </div>
             )
         }

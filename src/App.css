@@ -270,6 +270,31 @@
   max-width: 100%;
   max-height: 20%;
 }
+.boss-target {
+  min-width: 80%;
+  max-width: 80%;
+  min-height: 80%;
+  max-height: 80%;
+  float: left;
+  margin-left: 7%;
+  margin-right: 1%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  padding: 15px;
+  border-color: #223553;
+  border-style: solid;
+  border-width: 2px;
+  background-color: #18FCFF;
+  box-shadow: -1px -1px #009994; 
+  transition: 0.2s;
+  border-radius: 5px;
+  cursor: url('./Assets/mouseTarget.png'), auto;
+}
+.boss-img {
+  max-width: 90%;
+  max-height: 90%;
+  margin-left: 5%;
+}
 .score-container {
   margin-top: 1%;
   align-items: center;

@@ -53,7 +53,8 @@ export default class HomeScreen extends Component{
         selectedLevel={this.state.selectedLevel} 
         loadLevel={this.loadLevel}
         />)
-        return buttonArray[this.state.levelsCompleted]
+        // return buttonArray[this.state.levelsCompleted]
+        return buttonArray[3]
     }
     
     handleShoppe = () => {
@@ -159,7 +160,7 @@ export default class HomeScreen extends Component{
                     <button 
                         className='hvr-overline-from-right'
                         onClick={this.handleShoppe}>
-                        <img src={ShoppeIcon}/>
+                        <img src={ShoppeIcon} alt="shop"/>
                     </button>
                 </div>
                     <div className='level-select-container'>
@@ -173,15 +174,15 @@ export default class HomeScreen extends Component{
                             <h3 className='text'>Instructions</h3>
                             <p className='text'>You Have 30 seconds to:</p>
                             <div className='instructions-icons'>
-                                <img className='stikes-img' src={satelliteIcon}></img>
+                                <img className='stikes-img' src={satelliteIcon} alt="satellite"></img>
                                 <p className='text'>Shoot These</p>
                             </div>
                             <div className='instructions-icons'>
-                                <img className='stikes-img' src={friendlySmall}></img>
+                                <img className='stikes-img' src={friendlySmall} alt="alien"></img>
                                 <p className='text'>But Not These</p>
                             </div>
                             <div className='instructions-icons'>
-                                <img className='stikes-img' src={BombIcon}></img>
+                                <img className='stikes-img' src={BombIcon} alt="bomb"></img>
                                 <p className='text'>Shoot These If You Want, But It's A Bad Idea</p>
                             </div>
                         </div>
@@ -200,6 +201,7 @@ export default class HomeScreen extends Component{
     loadLevel = (info) => {
         let obj = info
         if(obj.name === 'Boss Fight!'){
+            console.log('boss fight')
             this.setState({
                 selectedLevel: obj,
                 fightBoss: true
@@ -259,18 +261,23 @@ export default class HomeScreen extends Component{
 
     render() {
         //until a level is selected, show the levels avaiable
-        if (this.state.playLevel === false && this.state.shoppeView === false){
+        if (this.state.playLevel === false && this.state.shoppeView === false && this.state.fightBoss === false){
             return (
                 this.levelSelect()
             )
         } 
         //after selected a level, render the level
-        else if (this.state.playLevel === true && this.state.shoppeView === false) {
+        else if (this.state.playLevel === true && this.state.shoppeView === false && this.state.fightBoss === false) {
             return (
                 this.play()
             )
         }
-        else if (this.state.shoppeView === true && this.state.playLevel === false){
+        else if (this.state.fightBoss === true && this.state.playLevel === false && this.state.shoppeView === false) {
+            return (
+                this.loadBossFight()
+            )
+        }
+        else if (this.state.shoppeView === true && this.state.playLevel === false && this.state.fightBoss === false){
             return this.loadShoppe()
         }
     }
