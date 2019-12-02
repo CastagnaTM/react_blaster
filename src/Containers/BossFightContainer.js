@@ -202,6 +202,13 @@ export default class BossFightContainer extends Component{
                 })
                 this.runBoss();
             }
+            if(this.state.bossHealth <= 0){
+                clearInterval(gameLoop)
+                this.setState({
+                    success: true,
+                    levelEnd: true
+                })
+            }
             //leaving first two conditions for weakened boss mode stretch goal
             else if(this.state.levelPoints < 0 || this.state.hitFriendlyCount === 3
                 || this.state.health === 0){

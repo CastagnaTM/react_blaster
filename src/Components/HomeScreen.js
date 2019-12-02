@@ -53,8 +53,8 @@ export default class HomeScreen extends Component{
         selectedLevel={this.state.selectedLevel} 
         loadLevel={this.loadLevel}
         />)
-        // return buttonArray[this.state.levelsCompleted]
-        return buttonArray[3]
+        return buttonArray[this.state.levelsCompleted]
+        // return buttonArray[3]
     }
     
     handleShoppe = () => {
@@ -256,6 +256,7 @@ export default class HomeScreen extends Component{
         }
         this.setState({
             playLevel: false,
+            fightBoss: false
         })
     }
 
