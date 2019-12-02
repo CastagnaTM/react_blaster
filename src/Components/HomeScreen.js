@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import LevelContainer from '../Containers/LevelContainer'
+import BossFightContainer from '../Containers/BossFightContainer'
 import LevelSelector from './LevelSelector'
 import Shoppe from './Shoppe'
 import friendlySmall from '../Assets/FriendlySmall.png'
@@ -8,19 +9,24 @@ import BombIcon from '../Assets/BombIcon.png'
 import ShoppeIcon from '../Assets/ShoppeIcon.png'
 
 
+
 //this component holds the homescreen, including level selection and potentially other options
 
 export default class HomeScreen extends Component{
 
     state = {
         playLevel: false,
+        fightBoss: false, 
+        playedOnce: false,
         levels: [],
         selectedLevel: null,
-        totalPoints: 0,
-        playedOnce: false,
-        health: 4,
         levelsCompleted: 0,
-        shoppeView: false
+        totalPoints: 0,
+        health: 4,
+        maxHealth: 4,
+        blasterPower: 1,
+        shoppeView: false,
+        showLevelInfo: false
     }
 
     //calls the fetch to load level options
@@ -28,12 +34,23 @@ export default class HomeScreen extends Component{
         this.getLevels()
     }
 
-    //renders buttons for each load-able level
-    //add abiltity to load different difficulties with different formats
-    //also hide levels that haven't been unlocked yet
+    //fetches the levels
+    getLevels = () => {
+        fetch('http://localhost:3000/levels')
+        .then(resp => resp.json())
+        .then(data => {
+           this.setState({
+               levels: data
+           })
+        })
+    }
 
+    //renders buttons for each load-able level
     getLevelButtons = () => {
-       let buttonArray = this.state.levels.map((level, i) => <LevelSelector key={i}{...level} 
+       let buttonArray = this.state.levels.map((level, i) => <LevelSelector key={i}{...level}
+        showLevelInfo={this.state.showLevelInfo} 
+        loadLevelInfo={this.loadLevelInfo}
+        selectedLevel={this.state.selectedLevel} 
         loadLevel={this.loadLevel}
         />)
         return buttonArray[this.state.levelsCompleted]
@@ -45,30 +62,96 @@ export default class HomeScreen extends Component{
         })
     }
 
-    handlePurchase = () => {
-        if(this.state.totalPoints >= 50){
-            this.setState({
-                health: 4,
-                totalPoints: this.state.totalPoints - 50
-            })
+    handlePurchase = (item) => {
+        if(this.state.totalPoints >= item.price){
+            switch(item.name){
+                case 'Regular Health Potion':
+                    if(this.state.maxHealth === 4){
+                        if (this.state.health >= 2){
+                            this.setState({
+                                health: 4,
+                                totalPoints: this.state.totalPoints - item.price
+                            })
+                        }
+                        else {
+                            this.setState({
+                                health: this.state.health+2,
+                                totalPoints: this.state.totalPoints - item.price
+                            })
+                        }
+                    }
+                    if(this.state.maxHealth === 8){
+                        if (this.state.health >= 6){
+                            this.setState({
+                                health: 8,
+                                totalPoints: this.state.totalPoints - item.price
+                            })
+                        }
+                        else {
+                            this.setState({
+                                health: this.state.health+2,
+                                totalPoints: this.state.totalPoints - item.price
+                            })
+                        }
+                    }
+                    break;
+                case 'Big Health Potion':
+                        this.setState({
+                            health: this.state.maxHealth,
+                            totalPoints: this.state.totalPoints - item.price
+                        })
+                    break;
+                case "Double Blast-O'-Matic":
+                        this.setState({
+                            blasterPower: 2,
+                            totalPoints: this.state.totalPoints - item.price
+                        })
+                    break;
+                case "The RYNO":
+                        this.setState({
+                            blasterPower: 5,
+                            totalPoints: this.state.totalPoints - item.price
+                        })
+                    break;
+                case 'Armor Upgrade':
+                    this.setState({
+                        maxHealth: 8,
+                        totalPoints: this.state.totalPoints - item.price
+                    })
+                    break;
+                default:
+                    console.log('something went wrong')
+                    break;
+            }
         }
-        //some sort of response if you don't have enough money
-        // preferably a popup, 
+        else{
+            console.log('not enough monies!')
+        }
+        
+    }
+
+    backToGame = () => {
+        this.setState({
+            shoppeView: false
+        })
     }
 
     loadShoppe = () => {
         return(
             <Shoppe 
+            backToGame={this.backToGame}
+            health={this.state.health}
             handlePurchase={this.handlePurchase}
             points={this.state.totalPoints} />
         )    
     }
+
     levelSelect = () => {
         return(
             <div className='home-screen-background'>
                 <div className='home-screen-header'>
-                    <p style={{color: 'white', marginRight: '2%'}}>{this.state.playedOnce ? `New Total Score: ${this.state.totalPoints}` : `Total Score: ${this.state.totalPoints}`}</p>
-                    <p style={{color: 'white', marginRight: '2%'}}>Health: {this.state.health}</p>
+                    <p className='text' style={{marginRight: '2%'}}>{this.state.playedOnce ? `New Total Score: ${this.state.totalPoints}` : `Total Score: ${this.state.totalPoints}`}</p>
+                    <p className='text' style={{marginRight: '2%'}}>Health: {this.state.health}</p>
                 </div>
                 
                 <div className='home-screen-column'>
@@ -82,6 +165,7 @@ export default class HomeScreen extends Component{
                     <div className='level-select-container'>
                         <div className='level-select'>
                             {this.getLevelButtons()}
+                                
                         </div>
                     </div>
                     <div className='instructions'>
@@ -107,31 +191,53 @@ export default class HomeScreen extends Component{
         )
     }
     //uses info from the levelSelector button to set the selected level, and start the level
+    loadLevelInfo = () => {
+        this.setState({
+            showLevelInfo: true
+        })
+    }
+
     loadLevel = (info) => {
         let obj = info
-        this.setState({
-            selectedLevel: obj,
-            playLevel: true
-        })
+        if(obj.name === 'Boss Fight!'){
+            this.setState({
+                selectedLevel: obj,
+                fightBoss: true
+            })
+        }
+        else {
+            this.setState({
+                selectedLevel: obj,
+                playLevel: true,
+            })
+        }
+        
     }
-    //fetches the levels
-    getLevels = () => {
-        fetch('http://localhost:3000/levels')
-        .then(resp => resp.json())
-        .then(data => {
-           this.setState({
-               levels: data
-           })
-        })
-    }
+    
 
     //renders the levelContainer (AKA the selected level)
     play = () => {
         return (
-            <LevelContainer 
-            health={this.state.health}
-            selectedLevel={this.state.selectedLevel}
-            levelComplete={this.levelComplete}
+            <LevelContainer
+                blasterPower={this.state.blasterPower}
+                maxHealth={this.state.maxHealth} 
+                health={this.state.health}
+                selectedLevel={this.state.selectedLevel}
+                levelComplete={this.levelComplete}
+            />
+        )
+    }
+
+    //fight boss function here. Also update render to call this method if fightBoss === true and shoppeview = false
+
+    loadBossFight = () => {
+        return(
+            <BossFightContainer
+                blasterPower={this.state.blasterPower}
+                maxHealth={this.state.maxHealth} 
+                health={this.state.health}
+                selectedLevel={this.state.selectedLevel}
+                levelComplete={this.levelComplete}
             />
         )
     }
@@ -142,7 +248,8 @@ export default class HomeScreen extends Component{
             totalPoints: this.state.totalPoints + levelPoints,
             health: health,
             playedOnce: true,
-            levelsCompleted: this.state.levelsCompleted + 1
+            levelsCompleted: this.state.levelsCompleted + 1,
+            showLevelInfo: false
             })
         }
         this.setState({
