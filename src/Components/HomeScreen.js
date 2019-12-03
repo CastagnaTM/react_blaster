@@ -62,7 +62,7 @@ export default class HomeScreen extends Component{
             shoppeView: true
         })
     }
-
+    
     handlePurchase = (item) => {
         if(this.state.totalPoints >= item.price){
             switch(item.name){
@@ -104,7 +104,7 @@ export default class HomeScreen extends Component{
                     break;
                 case "Double Blast-O'-Matic":
                         this.setState({
-                            blasterPower: 2,
+                            blasterPower: 3,
                             totalPoints: this.state.totalPoints - item.price
                         })
                     break;
@@ -139,7 +139,8 @@ export default class HomeScreen extends Component{
 
     loadShoppe = () => {
         return(
-            <Shoppe 
+            <Shoppe
+            blasterPower={this.state.blasterPower}
             backToGame={this.backToGame}
             health={this.state.health}
             handlePurchase={this.handlePurchase}

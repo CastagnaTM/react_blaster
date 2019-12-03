@@ -398,6 +398,14 @@
   background-size: cover;
   height: 100vh;
 }
+.boss-fight {
+  background-image: url('./Assets/BossFightBg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  
+}
 /* 
 * level end return button 
 */
@@ -557,6 +565,36 @@
 .description-container {
   flex-direction: column;
   width: 70%;
+}
+.hvr-overline-from-right-back {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(193, 201, 223, 0.63);
+  border-radius: 6px;
+}
+.hvr-overline-from-right-back:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 100%;
+  right: 0;
+  top: 0;
+  background: #217672;
+  height: 6px;
+  -webkit-transition-property: left;
+  transition-property: left;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-overline-from-right-back:hover:before, .hvr-overline-from-right-back:focus:before, .hvr-overline-from-right-back:active:before {
+  left: 0;
 }
 /* 
 * shoppe item buttons 
