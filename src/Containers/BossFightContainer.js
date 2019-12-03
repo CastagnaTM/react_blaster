@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import FlipMove from 'react-flip-move'
 import Targets from '../Components/Targets'
 import LevelEnd from '../Components/LevelEnd'
+import friendlySmall from '../Assets/FriendlySmall.png'
+import friendlyStrike from '../Assets/FriendlyStrike.png'
 import healthFull from '../Assets/HealthFull.png'
 import health3 from '../Assets/Health3.png'
 import health2 from '../Assets/Health2.png'
@@ -32,7 +34,7 @@ export default class BossFightContainer extends Component{
         firendlyBackgroundColor: '#18FCFF',
         debrisBackgroundColor: '#0B162A',
         hitFriendlyCount: 0,
-        bossView: false
+        bossView: false,
     }
     
 
@@ -52,19 +54,29 @@ export default class BossFightContainer extends Component{
 
     //function for handling target clicks
     handleClick = (name, target_type) => {
+        console.log(this.state.blasterPower)
         //finds the target that was clicked
         let thisTarget = this.state.targets.find(target => target.name === name)  
         //conditional for responding to target type
-        if(target_type === 'bomb'){
+        if(target_type !== 'asteroid'){
             if(thisTarget.isClicked === 0){
                 thisTarget.isClicked = 1
-                this.setState({
-                    isClicked: 1,
-                    health: this.state.health-1
-                })
+                if(target_type === 'bomb'){
+                    this.setState({
+                        isClicked: 1,
+                        health: this.state.health-1
+                        })
+                }
+                if(target_type === 'friendly'){
+                    this.setState({
+                        isClicked: 1,
+                        levelPoints: this.state.levelPoints-2,
+                        hitFriendlyCount: this.state.hitFriendlyCount+1
+                    })
+                }
             }
         }
-        if(target_type === 'asteroid'){
+        else if(target_type === 'asteroid'){
             if(thisTarget.isClicked < 2){
                 thisTarget.isClicked += this.state.blasterPower;
                 this.setState({
@@ -107,10 +119,14 @@ export default class BossFightContainer extends Component{
     }
     //translates targetString into objects
     establishTargets = (string) => {
+        
         let targets = [];
         let targetArray = string.split('');
         for (let i = 0; i < targetArray.length; i++){
-            if(targetArray[i] === '2'){
+            if(targetArray[i] === '1'){
+                targets.push({name: i, target_type: 'friendly', isClicked: 0})
+            }
+            else if(targetArray[i] === '2'){
                 targets.push({name: i, target_type: 'bomb', isClicked: 0})
             }
             else if(targetArray[i] === '3'){
@@ -171,13 +187,13 @@ export default class BossFightContainer extends Component{
         if(this.state.health === this.state.maxHealth){
             return healthFull;
         }
-        else if (this.state.health === (this.state.maxHealth * 0.75)){
+        else if (this.state.health >= (this.state.maxHealth * 0.75) && this.state.health < (this.state.maxHealth)){
             return health3;
         }
-        else if(this.state.health === (this.state.maxHealth * 0.5)){
+        else if(this.state.health >= (this.state.maxHealth * 0.5) && this.state.health < (this.state.maxHealth * 0.75)){
             return health2;
         }
-        else if (this.state.health === (this.state.maxHealth * 0.25)){
+        else if (this.state.health > 0 && this.state.health < (this.state.maxHealth * 0.5)){
             return health1;
         }
         else{
@@ -188,14 +204,17 @@ export default class BossFightContainer extends Component{
     runGame = () => {
         this.playMusic();
         //debris game loop
-        if (this.state.targets === null){
+        if(this.state.targets === null){
             this.establishTargets(this.state.selectedLevel.targetString)
         }
+        this.runLoop()
+    }
+    runLoop = () => {
         var gameLoop = setInterval(() =>{
             this.resetTargets()
             this.loadLevelGrid()
             //conditions for debris loop ending
-            if(this.state.defensesDestroyed >= 12){ // this condition needs to change
+            if(this.state.defensesDestroyed >= 12){ 
                 this.setState({
                     bossView: true,
                     defensesDestroyed: 0
@@ -221,6 +240,8 @@ export default class BossFightContainer extends Component{
         }, this.state.selectedLevel.BPM)
     }
     
+
+    
     // Function for displaying boss on screen
     runBoss = () => {
         //render boss -- load Targets component with a single boss target? use satellite as stand in for now
@@ -228,7 +249,14 @@ export default class BossFightContainer extends Component{
             this.setState({
                 counter: this.state.counter+1
             })
-            if(this.state.counter % 2 === 0){
+            if(this.state.bossHealth < 50 && this.state.bossHealth > 35){
+                clearInterval(bossLoop)
+                this.establishTargets('111122233')
+                this.setState({
+                    bossView: false
+                })
+            }
+            if(this.state.counter % 2 === 0 || (this.state.bossHealth < 80 && this.state.bossHealth > 70)){
                 clearInterval(bossLoop)
                 this.setState({
                     bossView: false
@@ -288,8 +316,21 @@ export default class BossFightContainer extends Component{
                         </div>
                     </div>
                     <div className='score-container'>
+                    <div className='strikes'>   
+                        <div className='strikes-tile'>
+                            <img className='stikes-img' src={this.state.hitFriendlyCount >= 1 ? friendlyStrike : friendlySmall} alt="alien strikes"></img>
+                        </div>
+                        <div className='strikes-tile'>
+                            <img className='stikes-img' src={this.state.hitFriendlyCount >= 2 ? friendlyStrike : friendlySmall} alt="alien strikes"></img>
+                        </div>
+                        <div className='strikes-tile'>        
+                            <img className='stikes-img' src={this.state.hitFriendlyCount === 3 ? friendlyStrike : friendlySmall} alt="alien strikes"></img>
+                        </div>
+                    </div> 
                         <div className='level-score'>
-                            <p style={{color:'whitesmoke', textAlign: 'center'}}>Score: {this.state.levelPoints}</p>
+                            <p style={{color:'whitesmoke', textAlign: 'center'}}>
+                                {this.state.bossView ? 'Boss Health: ' + this.state.bossHealth : 'Score:' + this.state.levelPoints}
+                                </p>
                         </div>
                     </div> 
                 </div> 

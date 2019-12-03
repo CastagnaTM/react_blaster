@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ShoppeItem from './ShoppeItem'
+import backIcon from '../Assets/BackToGame.png'
 
 export default class Shoppe extends Component {
     // create a null items state
@@ -41,6 +42,7 @@ export default class Shoppe extends Component {
             selectedItem: thisItem
         })
         console.log(this.state.selectedItem)
+        console.log(this.props.blasterPower)
     }
 
     loadDescription = () => {
@@ -72,9 +74,9 @@ export default class Shoppe extends Component {
                 <div className='shoppe-body'>
                     <div style={{marginLeft: '8%'}}>
                         <button 
-                            className='hvr-overline-from-right'
+                            className='hvr-overline-from-right-back'
                             onClick={this.props.backToGame}>
-                            Game
+                            <img src={backIcon}/>
                         </button>
                     </div>
                     <div className='shopkeeper'>

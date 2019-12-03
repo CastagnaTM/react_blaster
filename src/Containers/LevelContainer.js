@@ -172,13 +172,13 @@ export default class LevelContainer extends Component{
         if(this.state.health === this.state.maxHealth){
             return healthFull;
         }
-        else if (this.state.health === (this.state.maxHealth * 0.75)){
+        else if (this.state.health >= (this.state.maxHealth * 0.75) && this.state.health < (this.state.maxHealth)){
             return health3;
         }
-        else if(this.state.health === (this.state.maxHealth * 0.5)){
+        else if(this.state.health >= (this.state.maxHealth * 0.5) && this.state.health < (this.state.maxHealth * 0.75)){
             return health2;
         }
-        else if (this.state.health === (this.state.maxHealth * 0.25)){
+        else if (this.state.health > 0 && this.state.health < (this.state.maxHealth * 0.5)){
             return health1;
         }
         else{
@@ -238,7 +238,7 @@ export default class LevelContainer extends Component{
         return (
 
             <div className={this.props.selectedLevel.css}>
-                <div className='level-column'>
+                <div className={this.props.selectedLevel.name === 'Level Three' ? 'level-three-column' : 'level-column'}>
                     <div className='health-container'>
                         <img className='health-img' src={this.getHealth()} alt="health meter"></img>
                     </div>

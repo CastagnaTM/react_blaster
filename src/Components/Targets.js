@@ -6,6 +6,9 @@ import Explosion from '../Assets/Explosion.png'
 import Bomb from '../Assets/Bomb.png'
 import BombEx from '../Assets/BombEx.png'
 import Asteroid from '../Assets/Asteroids.png'
+import Boss from '../Assets/Boss.png'
+import BossDamaged from '../Assets/BossDamaged.png'
+
 
 
 
@@ -15,7 +18,20 @@ export default class Targets extends Component{
     state = {
         friendlyBackgroundColor: '#18FCFF',
         debrisBackgroundColor: '#0B162A',
+        bossColor: '#cecece',
         count: 0
+    }
+
+    getBoss = () => {
+        if(this.props.isClicked > 40){
+            return Boss;
+        }
+        else if(this.props.isClicked > 0){
+            return BossDamaged;
+        }
+        else{
+            return Explosion;
+        }
     }
     
     render() {
@@ -49,8 +65,8 @@ export default class Targets extends Component{
         }
         if(this.props.target_type === 'boss'){
             return (
-                <div className='boss-target' onClick={() => this.props.handleBossClick(this.props.name)} style={{backgroundColor: this.props.isClicked ?  this.state.debrisBackgroundColor : '#2F8745'}} >
-                    <img className='boss-img' alt="boss" src={this.props.isClicked <= 0 ? Explosion : Satellite}/>
+                <div className='boss-target' onClick={() => this.props.handleBossClick(this.props.name)} style={{backgroundColor: this.props.isClicked % 2 === 0 ?  this.state.debrisBackgroundColor : '#cecece'}} >
+                    <img className='boss-img' alt="boss" src={this.getBoss()}/>
                 </div>
             )
         }
