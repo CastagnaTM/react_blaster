@@ -25,7 +25,6 @@ export default class LevelSelector extends Component {
 
     //this is really just the button that the user clicks to select a level
     render(){
-        // if(this.props.name !== 'Boss Fight!'){
             return(
                 <div>
                     <button className='hvr-sweep-to-right' 

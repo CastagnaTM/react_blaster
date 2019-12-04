@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ShoppeItem from './ShoppeItem'
 import backIcon from '../Assets/BackToGame.png'
+import ShopKeeper from '../Assets/Shopkeeper.png'
 
 export default class Shoppe extends Component {
     // create a null items state
@@ -72,15 +73,17 @@ export default class Shoppe extends Component {
                     </div>                    
                 </div>
                 <div className='shoppe-body'>
-                    <div style={{marginLeft: '8%'}}>
+                    <div style={{marginLeft: '6%'}}>
                         <button 
                             className='hvr-overline-from-right-back'
                             onClick={this.props.backToGame}>
-                            <img src={backIcon}/>
+                            <img src={backIcon} alt='back to game'/>
                         </button>
                     </div>
-                    <div className='shopkeeper'>
-
+                    <div className='shopkeeper-container'>
+                        <div className='shopkeeper'>
+                            <img  src={ShopKeeper} alt='shop keeper' />
+                        </div>
                     </div>
                     <div className='goods'>
                         <div className='goods-container'>

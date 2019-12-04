@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import HomeScreen from './Components/HomeScreen'
+import TitleScreen from './Components/TitleScreen'
 import { Route, Switch } from 'react-router-dom';
 
 export default class App extends Component {
@@ -21,7 +21,7 @@ export default class App extends Component {
     <div>
       <Switch>
         {/* <Route path="/" render={(routerProps) => <LandingPage setUser={this.setUser}{...routerProps}/>} /> */}
-        <Route exact path="/home" render={(routerProps) => <HomeScreen {...routerProps}/>} />
+        <Route exact path="/home" render={(routerProps) => <TitleScreen {...routerProps}/>} />
       </Switch>
       {/* <Login/>
       <Signup/> */}
