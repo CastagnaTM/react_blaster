@@ -291,6 +291,7 @@ export default class BossFightContainer extends Component{
             return(
                 <div className={this.props.selectedLevel.css}>
                     <LevelEnd
+                    totalPoints={this.props.totalPoints}
                     gameComplete={true}
                     health={this.state.health} 
                     success={this.state.success}

@@ -6,11 +6,16 @@ export default class LevelEnd extends Component {
         gameEnd: false,
         highscores: null,
         name: '',
-        score: null
+        score: null,
+        scoresView: false
     }
 
     componentDidMount = () => {
-       this.getHighscores()
+        if(this.props.success){
+            this.setCurrentScore()
+            this.getHighscores()
+        }
+        
     }
 
     handleReturn = () => {
@@ -18,8 +23,14 @@ export default class LevelEnd extends Component {
     }
 
     displayHighscores = () => { 
-        let highscores = this.state.highscores.sort((a,b) => a.score > b.score ? 1 : -1)
-     return( highscores.map(score => <li>{score.user} . . . {score.score}</li>) )
+        let highscores = this.state.highscores.sort((a,b) => a.score < b.score ? 1 : -1)
+        return( highscores.map(score => <li className='text' style={{marginLeft: '34%', padding: '1%'}}>{score.name} . . . {score.score}</li>) )
+    }
+
+    setCurrentScore = () => {
+        this.setState({
+            score: this.props.levelPoints + this.props.totalPoints
+        })
     }
 
     getHighscores = () => {
@@ -48,16 +59,13 @@ export default class LevelEnd extends Component {
             },
             body: JSON.stringify({
                 name: this.state.name,
-                score: this.state.score // replace this by passing down total score
+                score: this.state.score 
                 })
         })
         .then(resp => resp.json())
         .then(data => {
             if (data.errors){
                 alert(data.errors)
-                } else {
-                    //something to add that new data
-            this.props.setUser(data.user)
             }
         })
     }
@@ -65,22 +73,28 @@ export default class LevelEnd extends Component {
     render(){
         return(
             <div className='level-end-container'>
-                <div className='level-end-grid'>
+                <div className='level-end-grid' style={{display: this.props.scoresView ? 'none' : 'block'}}>
                     <div>
-                        <p style={{color:'whitesmoke', textAlign: 'center'}}>
+                        <p className='text' style={{textAlign: 'center'}}>
                             {this.props.success ? `Congrats! You Scored ${this.props.levelPoints} Points!` : 'Sorry, you lost this time around...'}
+                        </p>
+                        <p className='text'>
+                        {this.props.gameComplete ? `You Beat The Game With ${this.state.score} Points! Enter Your Name Below:` : null}
                         </p>
                     </div>
                     <div>
-                        <button className='hvr-ripple-out' onClick={this.handleReturn}>Return</button>
+                        <button style={{display: this.props.gameComplete ? 'none' : 'block'}}className='hvr-ripple-out' onClick={this.handleReturn}>Return</button>
                     </div>
                 </div>
-                <div className='highscores-container' style={{display: this.props.success ? 'block' : 'none'}}>
-                <form className="form" onSubmit={this.handleHighScores}>
-                        <input name="name" value={this.state.name} onChange={this.handleChange} placeholder="Name..." />
-                        <button type="submit">Submit</button>
+                <div className='highscores-container' style={{display: this.props.gameComplete ? 'block' : 'none'}}>
+                    <h4 className='text' style={{marginLeft: '40%'}}>High Scores</h4>
+                    <form className="form" onSubmit={this.handleHighScores}>
+                        <input className="input" name="name" value={this.state.name} onChange={this.handleChange} placeholder="Name..." />
+                        <button className='scores-button' type="submit">Submit</button>
                     </form>
-                    {this.state.highscores ? this.displayHighscores() : null}
+                    <ul>
+                        {this.state.highscores ? this.displayHighscores() : null}
+                    </ul>
                 </div>
             </div>
         )

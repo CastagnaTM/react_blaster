@@ -25,7 +25,7 @@ export default class HomeScreen extends Component{
         totalPoints: 0,
         health: 4,
         maxHealth: 4,
-        blasterPower: 1,
+        blasterPower: 100,
         shoppeView: false,
         showLevelInfo: false,
         moreInstructions: false,
@@ -57,8 +57,8 @@ export default class HomeScreen extends Component{
         selectedLevel={this.state.selectedLevel} 
         loadLevel={this.loadLevel}
         />)
-        // return buttonArray[this.state.levelsCompleted]
-        return buttonArray[3]
+        return buttonArray[this.state.levelsCompleted]
+        // return buttonArray[3]
     }
 
     moreInstructions = () => {
@@ -255,6 +255,7 @@ export default class HomeScreen extends Component{
     loadBossFight = () => {
         return(
             <BossFightContainer
+                totalPoints={this.state.totalPoints}
                 blasterPower={this.state.blasterPower}
                 maxHealth={this.state.maxHealth} 
                 health={this.state.health}
