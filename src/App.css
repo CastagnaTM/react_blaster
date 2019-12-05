@@ -912,6 +912,9 @@
   margin-left: 42%;
   margin-bottom: 2%;
 }
+.hvr-ripple-out2:focus {
+  outline: none;
+}
 .hvr-ripple-out2:before {
   content: '';
   position: absolute;
@@ -925,6 +928,7 @@
   animation-duration: 1s;
 }
 .hvr-ripple-out2:hover:before, .hvr-ripple-out2:focus:before, .hvr-ripple-out2:active:before {
+  outline: none;
   -webkit-animation-name: hvr-ripple-out;
   animation-name: hvr-ripple-out;
 }

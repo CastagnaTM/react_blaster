@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 
-const story = ["You're Mission Is Almost Complete...", "As You Approach The Aliens' Homeworld...", "You Encounter A Sentient, Menacing Space Probe...",
+const story = ["Your Mission Is Almost Complete...", "As You Approach The Aliens' Homeworld...", "You Encounter A Sentient, Menacing Space Probe...",
  "NASA's 'The Voyager 1'...", "You Must Destroy It To Complete Your Adventure..."]
 
 

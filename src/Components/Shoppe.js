@@ -68,7 +68,7 @@ export default class Shoppe extends Component {
                     <div className='shoppe-header-row'>
                         <p className='text' >Buy Somethin' Will Ya?</p>
                         <p className='text' style={{marginLeft: '40%'}}> Available Points: {this.props.points},
-                         Your Health: {this.props.health}/{this.props.health}</p> 
+                         Your Health: {this.props.health}/{this.props.maxHealth}</p> 
                     </div>                    
                 </div>
                 <div className='shoppe-body'>
