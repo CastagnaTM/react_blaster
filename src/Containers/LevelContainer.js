@@ -9,7 +9,9 @@ import health3 from '../Assets/Health3.png'
 import health2 from '../Assets/Health2.png'
 import health1 from '../Assets/Health1.png'
 import healthEmpty from '../Assets/HealthEmpty.png'
-import levelOne from '../Assets/Audio/Space King.mp3'
+import levelOne from '../Assets/Audio/levelOne.mp3'
+import levelTwo from '../Assets/Audio/levelTwo.mp3'
+import levelThree from '../Assets/Audio/levelThree.mp3'
 let music;
 
 
@@ -36,22 +38,17 @@ export default class LevelContainer extends Component{
 
     //loads everything and holds setInterval loops
     componentDidMount = () => {
-        music = new Audio(levelOne)
-        if(this.state.selectedLevel.name === 'Level One'){
-            music.currentTime=0.0
-        }
-        if(this.state.selectedLevel.name === 'Level Two'){
-            music.currentTime=21.0
-        }
-        if(this.state.selectedLevel.name === 'Level Three'){
-            music.currentTime=53.0
-        }
+        music = new Audio(this.getMusic())
         this.runGame()    
     }
     getMusic = () => {
         switch (this.state.selectedLevel.name){
             case 'Level One':
-                return levelOne
+                return levelOne;
+            case 'Level Two':
+                return levelTwo;
+            case 'Level Three':
+                return levelThree;
             default:
                 return levelOne
         }
@@ -200,6 +197,9 @@ export default class LevelContainer extends Component{
         if (this.state.targets === null){
             this.establishTargets(this.state.selectedLevel.targetString)
         }
+        if(this.state.selectedLevel.name === 'Level Three'){
+            music.currentTime = 34.0;
+        }
         this.playMusic();
         var gameLoop = setInterval(() =>{
             this.resetTargets()
@@ -208,7 +208,7 @@ export default class LevelContainer extends Component{
                 counter: this.state.counter+1
             })
             //conditions for level ending
-            if(this.state.counter === 14 && this.state.levelPoints >= this.state.selectedLevel.goal){ 
+            if(this.state.counter === 15 && this.state.levelPoints >= this.state.selectedLevel.goal){ 
                 clearInterval(gameLoop)
                 this.stopMusic()
                 this.setState({
@@ -216,7 +216,7 @@ export default class LevelContainer extends Component{
                     levelEnd: true
                 })
             }
-            else if(this.state.counter === 14 || this.state.levelPoints < 0 || this.state.hitFriendlyCount === 3
+            else if(this.state.counter === 15 || this.state.levelPoints < 0 || this.state.hitFriendlyCount === 3
                 || this.state.health === 0){
                 clearInterval(gameLoop)
                 this.stopMusic()
@@ -224,7 +224,7 @@ export default class LevelContainer extends Component{
                     levelEnd: true
                 })
             }
-        }, 2333)
+        }, 2000)
     }
 
     render() {

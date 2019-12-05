@@ -147,7 +147,7 @@ export default class HomeScreen extends Component{
             }
         }
         else{
-            alert('Not Enough Points!')
+            alert("You Can't Afford That!")
         }
         
     }

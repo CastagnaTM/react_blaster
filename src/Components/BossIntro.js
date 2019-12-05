@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import Logo from '../Assets/Logo.png'
-import HomeScreen from './HomeScreen'
+
 
 const story = ["You're Mission Is Almost Complete...", "As You Approach The Aliens' Homeworld...", "You Encounter A Sentient, Menacing Space Probe...",
  "NASA's 'The Voyager 1'...", "You Must Destroy It To Complete Your Adventure..."]

@@ -9,7 +9,6 @@ import health3 from '../Assets/Health3.png'
 import health2 from '../Assets/Health2.png'
 import health1 from '../Assets/Health1.png'
 import healthEmpty from '../Assets/HealthEmpty.png'
-import levelOne from '../Assets/Audio/levelOne.mp3'
 import bossMusic from '../Assets/Audio/bossMusic.mp3'
 let music;
 
