@@ -41,6 +41,7 @@ export default class BossFightContainer extends Component{
     //loads everything and holds setInterval loops
     componentDidMount = () => {
         music = new Audio(this.getMusic())
+        // music = new Audio('https://soundcloud.com/jasmin-brooke-1/space-king')
         this.state.bossView ? this.runBoss() : this.runGame();    
     }
     getMusic = () => {
@@ -103,11 +104,9 @@ export default class BossFightContainer extends Component{
             if(thisTarget.isClicked <= 0){
                 this.setState({
                     levelPoints: this.state.levelPoints+1000
-                    //call winning condition
                 })
             }
         }
-        // console.log(this.state.bossHealth)
     }
 
     // resets the state for targets, used for setInterval loop
@@ -237,14 +236,19 @@ export default class BossFightContainer extends Component{
                     levelEnd: true
                 })
             }
-        }, this.state.selectedLevel.BPM)
+        }, 2000)
     }
     
 
     
     // Function for displaying boss on screen
     runBoss = () => {
-        //render boss -- load Targets component with a single boss target? use satellite as stand in for now
+        //render boss -- load Targets component with a single boss target
+        console.log(this.state.counter)
+
+        this.setState({
+            counter: 0
+        })
         var bossLoop = setInterval(() => {
             this.setState({
                 counter: this.state.counter+1
@@ -256,11 +260,12 @@ export default class BossFightContainer extends Component{
                     bossView: false
                 })
             }
-            if(this.state.counter % 2 === 0 || (this.state.bossHealth < 80 && this.state.bossHealth > 70)){
-                clearInterval(bossLoop)
+            if(this.state.counter === 2 || (this.state.bossHealth < 80 && this.state.bossHealth > 70)){
                 this.setState({
                     bossView: false
                 })
+                clearInterval(bossLoop)
+
             }
         }, 2000)
     }
@@ -286,6 +291,8 @@ export default class BossFightContainer extends Component{
             return(
                 <div className={this.props.selectedLevel.css}>
                     <LevelEnd
+                    totalPoints={this.props.totalPoints}
+                    gameComplete={true}
                     health={this.state.health} 
                     success={this.state.success}
                     levelPoints={this.state.levelPoints}

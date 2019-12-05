@@ -13,6 +13,7 @@ import levelOne from '../Assets/Audio/levelOne.mp3'
 let music;
 
 
+
 export default class LevelContainer extends Component{
 
     //refactor later to use a switch statement to run through these functions based on which level is selected
@@ -199,7 +200,7 @@ export default class LevelContainer extends Component{
                 counter: this.state.counter+1
             })
             //conditions for level ending
-            if(this.state.counter === 16 && this.state.levelPoints >= this.state.selectedLevel.goal){ //add condition for winning: a certain number of points needed per level
+            if(this.state.counter === 16 && this.state.levelPoints >= this.state.selectedLevel.goal){ 
                 clearInterval(gameLoop)
                 this.stopMusic()
                 this.setState({
@@ -215,7 +216,7 @@ export default class LevelContainer extends Component{
                     levelEnd: true
                 })
             }
-        }, this.state.selectedLevel.BPM)
+        }, 2000)
     }
 
     render() {
