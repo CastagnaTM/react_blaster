@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+let highscores;
+
 export default class LevelEnd extends Component {
 
     state = {
@@ -7,6 +9,7 @@ export default class LevelEnd extends Component {
         highscores: null,
         name: '',
         score: null,
+        show: false,
         scoresView: false
     }
 
@@ -23,7 +26,8 @@ export default class LevelEnd extends Component {
     }
 
     displayHighscores = () => { 
-        let highscores = this.state.highscores.sort((a,b) => a.score < b.score ? 1 : -1)
+        let allHighscores = this.state.highscores.sort((a,b) => a.score < b.score ? 1 : -1)
+        highscores = allHighscores.slice(0,5)
         return( highscores.map(score => <li className='text' style={{marginLeft: '34%', padding: '1%'}}>{score.name} . . . {score.score}</li>) )
     }
 
@@ -59,7 +63,7 @@ export default class LevelEnd extends Component {
             },
             body: JSON.stringify({
                 name: this.state.name,
-                score: this.state.score 
+                score: this.state.score
                 })
         })
         .then(resp => resp.json())
@@ -67,6 +71,11 @@ export default class LevelEnd extends Component {
             if (data.errors){
                 alert(data.errors)
             }
+        })
+        this.setState({
+            show: true,
+            name: this.state.name,
+            score: this.state.score 
         })
     }
 
@@ -93,6 +102,7 @@ export default class LevelEnd extends Component {
                         <button className='scores-button' type="submit">Submit</button>
                     </form>
                     <ul>
+                        <li className='text' style={{marginLeft: '34%', padding: '1%', display: this.state.show ? 'list-item' : 'none'}}> {this.state.name} ... {this.state.score}</li>
                         {this.state.highscores ? this.displayHighscores() : null}
                     </ul>
                 </div>

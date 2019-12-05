@@ -10,6 +10,7 @@ import health2 from '../Assets/Health2.png'
 import health1 from '../Assets/Health1.png'
 import healthEmpty from '../Assets/HealthEmpty.png'
 import levelOne from '../Assets/Audio/levelOne.mp3'
+import bossMusic from '../Assets/Audio/bossMusic.mp3'
 let music;
 
 
@@ -40,17 +41,8 @@ export default class BossFightContainer extends Component{
 
     //loads everything and holds setInterval loops
     componentDidMount = () => {
-        music = new Audio(this.getMusic())
-        // music = new Audio('https://soundcloud.com/jasmin-brooke-1/space-king')
+        music = new Audio(bossMusic)
         this.state.bossView ? this.runBoss() : this.runGame();    
-    }
-    getMusic = () => {
-        switch (this.state.selectedLevel.name){
-            case 'Level One':
-                return levelOne
-            default:
-                return levelOne
-        }
     }
 
     //function for handling target clicks
@@ -175,6 +167,7 @@ export default class BossFightContainer extends Component{
     }
     playMusic = () => {
         music.play();
+        music.loop=true;
     }
 
     stopMusic = () => {
