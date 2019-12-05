@@ -235,6 +235,7 @@ export default class LevelContainer extends Component{
             return(
                 <div className={this.props.selectedLevel.css}>
                     <LevelEnd
+                    levelName={this.state.selectedLevel.name}
                     health={this.state.health} 
                     success={this.state.success}
                     levelPoints={this.state.levelPoints}

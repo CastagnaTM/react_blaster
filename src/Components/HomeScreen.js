@@ -27,7 +27,7 @@ export default class HomeScreen extends Component{
         totalPoints: 0,
         health: 4,
         maxHealth: 4,
-        blasterPower: 100,
+        blasterPower: 1,
         shoppeView: false,
         showLevelInfo: false,
         moreInstructions: false,
@@ -61,8 +61,8 @@ export default class HomeScreen extends Component{
         selectedLevel={this.state.selectedLevel} 
         loadLevel={this.loadLevel}
         />)
-        // return buttonArray[this.state.levelsCompleted]
-        return buttonArray[3]
+        return buttonArray[this.state.levelsCompleted]
+        // return buttonArray[0]
     }
 
     moreInstructions = () => {
