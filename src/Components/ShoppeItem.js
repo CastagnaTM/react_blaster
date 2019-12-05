@@ -26,9 +26,6 @@ export default class ShopItem extends Component {
         }
     }
 
-    //desc: <p className='text'>{this.props.description}{<br></br>}Price: {this.props.price} points</p>
-
-
     render(){
         return(
                 <div>

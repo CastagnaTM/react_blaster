@@ -39,7 +39,7 @@ export default class LevelSelector extends Component {
                             <p className='text' style={{marginLeft: '10%'}}> {this.props.name} {this.props.name === 'Boss Fight!' ? ': Take out the source of the debris! This would be a good time to a have a serious weapon upgrade...' : `: Score At Least ${this.props.goal} Points!`}</p>
                             <div className='gif-container'>
                                 <img className='level-gif' src={this.getGif(this.props.name)} alt="gameplay gif"/>
-                                <p className='text' style={{display: this.props.playedOnce ? 'none' : 'block'}}>This Is Your In-Game Display. Your Health Meter Is On The Left, Your Game in The Center, And Your Number Of Aliens Hit And Current Score Are Underneath</p>
+                                <p className='text' style={{display: this.props.playedOnce ? 'none' : 'block'}}>^ This Is Your In-Game Display. Your Health Meter Is On The Left, Your Game in The Center, And Your Number Of Aliens Hit And Current Score Are Underneath</p>
                             </div>
                         </div>
                     </div>       
