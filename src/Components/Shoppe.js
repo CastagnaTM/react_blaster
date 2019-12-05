@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ShoppeItem from './ShoppeItem'
 import backIcon from '../Assets/BackToGame.png'
 import ShopKeeper from '../Assets/Shopkeeper.png'
+import SadShopKeeper from '../Assets/SadShopkeeper.png'
 
 export default class Shoppe extends Component {
     // create a null items state
@@ -10,7 +11,7 @@ export default class Shoppe extends Component {
 
     state = {
         items: [],
-        selectedItem: "none"
+        selectedItem: "none",
     }
 
     componentDidMount = () => {
@@ -30,7 +31,8 @@ export default class Shoppe extends Component {
     loadGoods = () => {
         let items = this.state.items;
        return( 
-           items.map((item, i) => <ShoppeItem 
+            items.map((item, i) => <ShoppeItem
+            easterEgg={this.props.easterEgg}    
             key={i}{...item}
             handleSelect={this.handleSelect}
             />)
@@ -66,7 +68,7 @@ export default class Shoppe extends Component {
         return(
             <div className='home-screen-background'>
                 <div className='shoppe-header'>
-                    <p className='text' style={{fontWeight: 'bolder'}}>Shoppe</p>
+                    <p className='text' style={{fontWeight: 'bolder', marginTop: '0%'}}>Shoppe</p>
                     <div className='shoppe-header-row'>
                         <p className='text' >Buy Somethin' Will Ya?</p>
                         <p className='text' style={{marginLeft: '45%'}}> Available Points: {this.props.points}, Your Health: {this.props.health}</p> 
@@ -82,7 +84,7 @@ export default class Shoppe extends Component {
                     </div>
                     <div className='shopkeeper-container'>
                         <div className='shopkeeper'>
-                            <img  src={ShopKeeper} alt='shop keeper' />
+                            <img onClick={() => this.props.handleEasterEgg()} src={this.props.easterEgg? SadShopKeeper : ShopKeeper} alt='shop keeper' />
                         </div>
                     </div>
                     <div className='goods'>

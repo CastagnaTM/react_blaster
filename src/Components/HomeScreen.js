@@ -3,10 +3,11 @@ import LevelContainer from '../Containers/LevelContainer'
 import BossFightContainer from '../Containers/BossFightContainer'
 import LevelSelector from './LevelSelector'
 import Shoppe from './Shoppe'
-import friendlySmall from '../Assets/FriendlySmall.png'
+import friendlySmall from '../Assets/Friendly1.png'
 import satelliteIcon from '../Assets/SatelliteIcon.png'
-import BombIcon from '../Assets/BombIcon.png'
+import Bomb from '../Assets/Bomb.png'
 import ShoppeIcon from '../Assets/ShoppeIcon.png'
+import Asteroids from '../Assets/Asteroids.png'
 
 
 
@@ -26,7 +27,9 @@ export default class HomeScreen extends Component{
         maxHealth: 4,
         blasterPower: 1,
         shoppeView: false,
-        showLevelInfo: false
+        showLevelInfo: false,
+        moreInstructions: false,
+        easterEgg: false
     }
 
     //calls the fetch to load level options
@@ -48,13 +51,20 @@ export default class HomeScreen extends Component{
     //renders buttons for each load-able level
     getLevelButtons = () => {
        let buttonArray = this.state.levels.map((level, i) => <LevelSelector key={i}{...level}
+        playedOnce={this.state.playedOnce}
         showLevelInfo={this.state.showLevelInfo} 
         loadLevelInfo={this.loadLevelInfo}
         selectedLevel={this.state.selectedLevel} 
         loadLevel={this.loadLevel}
         />)
-        return buttonArray[this.state.levelsCompleted]
-        // return buttonArray[3]
+        // return buttonArray[this.state.levelsCompleted]
+        return buttonArray[3]
+    }
+
+    moreInstructions = () => {
+        this.setState({
+            moreInstructions: !this.state.moreInstructions
+        })
     }
     
     handleShoppe = () => {
@@ -62,22 +72,29 @@ export default class HomeScreen extends Component{
             shoppeView: true
         })
     }
+
+    handleEasterEgg = () => {
+        this.setState({
+            easterEgg: true
+        })
+    }
     
     handlePurchase = (item) => {
-        if(this.state.totalPoints >= item.price){
+        let price = this.state.easterEgg? item.price+30 : item.price
+        if(this.state.totalPoints >= price){
             switch(item.name){
                 case 'Regular Health Potion':
                     if(this.state.maxHealth === 4){
                         if (this.state.health >= 2){
                             this.setState({
                                 health: 4,
-                                totalPoints: this.state.totalPoints - item.price
+                                totalPoints: this.state.totalPoints - price
                             })
                         }
                         else {
                             this.setState({
                                 health: this.state.health+2,
-                                totalPoints: this.state.totalPoints - item.price
+                                totalPoints: this.state.totalPoints - price
                             })
                         }
                     }
@@ -85,13 +102,13 @@ export default class HomeScreen extends Component{
                         if (this.state.health >= 6){
                             this.setState({
                                 health: 8,
-                                totalPoints: this.state.totalPoints - item.price
+                                totalPoints: this.state.totalPoints - price
                             })
                         }
                         else {
                             this.setState({
                                 health: this.state.health+2,
-                                totalPoints: this.state.totalPoints - item.price
+                                totalPoints: this.state.totalPoints - price
                             })
                         }
                     }
@@ -99,25 +116,25 @@ export default class HomeScreen extends Component{
                 case 'Big Health Potion':
                         this.setState({
                             health: this.state.maxHealth,
-                            totalPoints: this.state.totalPoints - item.price
+                            totalPoints: this.state.totalPoints - price
                         })
                     break;
                 case "Double Blast-O'-Matic":
                         this.setState({
                             blasterPower: 3,
-                            totalPoints: this.state.totalPoints - item.price
+                            totalPoints: this.state.totalPoints - price
                         })
                     break;
                 case "The RYNO":
                         this.setState({
                             blasterPower: 5,
-                            totalPoints: this.state.totalPoints - item.price
+                            totalPoints: this.state.totalPoints - price
                         })
                     break;
                 case 'Armor Upgrade':
                     this.setState({
                         maxHealth: 8,
-                        totalPoints: this.state.totalPoints - item.price
+                        totalPoints: this.state.totalPoints - price
                     })
                     break;
                 default:
@@ -126,7 +143,7 @@ export default class HomeScreen extends Component{
             }
         }
         else{
-            console.log('not enough monies!')
+            alert('Not Enough Points!')
         }
         
     }
@@ -140,6 +157,8 @@ export default class HomeScreen extends Component{
     loadShoppe = () => {
         return(
             <Shoppe
+            handleEasterEgg={this.handleEasterEgg}
+            easterEgg={this.state.easterEgg}
             blasterPower={this.state.blasterPower}
             backToGame={this.backToGame}
             health={this.state.health}
@@ -152,10 +171,9 @@ export default class HomeScreen extends Component{
         return(
             <div className='home-screen-background'>
                 <div className='home-screen-header'>
-                    <p className='text' style={{marginRight: '2%'}}>{this.state.playedOnce ? `New Total Score: ${this.state.totalPoints}` : `Total Score: ${this.state.totalPoints}`}</p>
-                    <p className='text' style={{marginRight: '2%'}}>Health: {this.state.health}</p>
+                    <p className='text' style={{marginRight: '2%', marginTop: '0%'}}>{this.state.playedOnce ? `New Total Score: ${this.state.totalPoints}` : `Total Score: ${this.state.totalPoints}`}</p>
+                    <p className='text' style={{marginRight: '2%'}}>Health: {this.state.health}/{this.state.health}</p>
                 </div>
-                
                 <div className='home-screen-column'>
                 <div style={{marginLeft: '8%'}}>
                     <button 
@@ -171,21 +189,22 @@ export default class HomeScreen extends Component{
                         </div>
                     </div>
                     <div className='instructions'>
-                        <div className='lines'>
-                            <h3 className='text'>Instructions</h3>
-                            <p className='text'>You Have 30 seconds to:</p>
+                        <div className='lines' >
+                            <h3 className='text' style={{marginBottom: '-1%'}}>Level Instructions</h3>
+                            <p className='text' style={{display: this.state.moreInstructions ? 'none' : 'block'}}>You Have 30 seconds to:</p>
                             <div className='instructions-icons'>
-                                <img className='stikes-img' src={satelliteIcon} alt="satellite"></img>
-                                <p className='text'>Shoot These</p>
+                                <img className='instructions-img' src={this.state.moreInstructions? Asteroids : satelliteIcon} alt={this.state.moreInstructions ? "asteroid" : "satellite"}></img>
+                                <p className='text'>{this.state.moreInstructions ? 'These Are Twice As Tough As Satellites. Earn 3 Points For Destroying Them!' : 'Earn Points By Shooting These'}</p>
                             </div>
                             <div className='instructions-icons'>
-                                <img className='stikes-img' src={friendlySmall} alt="alien"></img>
-                                <p className='text'>But Not These</p>
+                                <img className='instructions-img' src={this.state.moreInstructions ? ShoppeIcon : friendlySmall} alt={this.state.moreInstructions ? "shop-icon" : "alien" }></img>
+                                <p className='text'>{this.state.moreInstructions ? "Visit The Shoppe And Spend Your Points To Buy Health Potions And Upgrades. Your Health And Points Will Be Displayed In The Upper Right Corner" : "But Not These! You'll Lose 2 Points If You Do. Shoot Three And You Lose The Level"}</p>
                             </div>
-                            <div className='instructions-icons'>
-                                <img className='stikes-img' src={BombIcon} alt="bomb"></img>
-                                <p className='text'>Shoot These If You Want, But It's A Bad Idea</p>
+                            <div className='instructions-icons' style={{marginBottom: '1%', display: this.state.moreInstructions ? 'none' : 'block'}}>
+                                <img className='instructions-img' src={Bomb} alt="bomb"></img>
+                                <p className='text'>Shoot These If You Want, But You'll Lose 1 Health Point</p>
                             </div>
+                            <button className='more-button' onClick={() => this.moreInstructions()}> {this.state.moreInstructions ? 'Back' : 'More ...'}</button>
                         </div>
                     </div>
                 </div>
