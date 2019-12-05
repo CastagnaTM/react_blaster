@@ -8,7 +8,9 @@ import satelliteIcon from '../Assets/SatelliteIcon.png'
 import Bomb from '../Assets/Bomb.png'
 import ShoppeIcon from '../Assets/ShoppeIcon.png'
 import Asteroids from '../Assets/Asteroids.png'
+import homescreenMusic from '../Assets/Audio/homescreenMusic.mp3'
 
+let music = new Audio(homescreenMusic)
 
 
 //this component holds the homescreen, including level selection and potentially other options
@@ -25,7 +27,7 @@ export default class HomeScreen extends Component{
         totalPoints: 0,
         health: 4,
         maxHealth: 4,
-        blasterPower: 100,
+        blasterPower: 1,
         shoppeView: false,
         showLevelInfo: false,
         moreInstructions: false,
@@ -34,7 +36,9 @@ export default class HomeScreen extends Component{
 
     //calls the fetch to load level options
     componentDidMount = () => {
-        this.getLevels()
+        this.getLevels();
+        music.play()
+        music.loop=true;
     }
 
     //fetches the levels
@@ -58,7 +62,7 @@ export default class HomeScreen extends Component{
         loadLevel={this.loadLevel}
         />)
         return buttonArray[this.state.levelsCompleted]
-        // return buttonArray[3]
+        // return buttonArray[0]
     }
 
     moreInstructions = () => {
@@ -236,9 +240,14 @@ export default class HomeScreen extends Component{
         
     }
     
+    stopMusic = () => {
+        music.pause();
+        music.currentTime = 0.0;
+    }
 
     //renders the levelContainer (AKA the selected level)
     play = () => {
+        this.stopMusic()
         return (
             <LevelContainer
                 blasterPower={this.state.blasterPower}
@@ -253,6 +262,7 @@ export default class HomeScreen extends Component{
     //fight boss function here. Also update render to call this method if fightBoss === true and shoppeview = false
 
     loadBossFight = () => {
+        this.stopMusic()
         return(
             <BossFightContainer
                 totalPoints={this.state.totalPoints}
@@ -266,6 +276,7 @@ export default class HomeScreen extends Component{
     }
 
     levelComplete = (completed, levelPoints, health) =>{
+        music.play()
         if (completed === true){
             this.setState({
             totalPoints: this.state.totalPoints + levelPoints,

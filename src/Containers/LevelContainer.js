@@ -9,7 +9,7 @@ import health3 from '../Assets/Health3.png'
 import health2 from '../Assets/Health2.png'
 import health1 from '../Assets/Health1.png'
 import healthEmpty from '../Assets/HealthEmpty.png'
-import levelOne from '../Assets/Audio/levelOne.mp3'
+import levelOne from '../Assets/Audio/Space King.mp3'
 let music;
 
 
@@ -36,8 +36,16 @@ export default class LevelContainer extends Component{
 
     //loads everything and holds setInterval loops
     componentDidMount = () => {
-        music = new Audio(this.getMusic())
-        
+        music = new Audio(levelOne)
+        if(this.state.selectedLevel.name === 'Level One'){
+            music.currentTime=0.0
+        }
+        if(this.state.selectedLevel.name === 'Level Two'){
+            music.currentTime=21.0
+        }
+        if(this.state.selectedLevel.name === 'Level Three'){
+            music.currentTime=53.0
+        }
         this.runGame()    
     }
     getMusic = () => {
@@ -200,7 +208,7 @@ export default class LevelContainer extends Component{
                 counter: this.state.counter+1
             })
             //conditions for level ending
-            if(this.state.counter === 16 && this.state.levelPoints >= this.state.selectedLevel.goal){ 
+            if(this.state.counter === 14 && this.state.levelPoints >= this.state.selectedLevel.goal){ 
                 clearInterval(gameLoop)
                 this.stopMusic()
                 this.setState({
@@ -208,7 +216,7 @@ export default class LevelContainer extends Component{
                     levelEnd: true
                 })
             }
-            else if(this.state.counter === 16 || this.state.levelPoints < 0 || this.state.hitFriendlyCount === 3
+            else if(this.state.counter === 14 || this.state.levelPoints < 0 || this.state.hitFriendlyCount === 3
                 || this.state.health === 0){
                 clearInterval(gameLoop)
                 this.stopMusic()
@@ -216,7 +224,7 @@ export default class LevelContainer extends Component{
                     levelEnd: true
                 })
             }
-        }, 2000)
+        }, 2333)
     }
 
     render() {
@@ -227,6 +235,7 @@ export default class LevelContainer extends Component{
             return(
                 <div className={this.props.selectedLevel.css}>
                     <LevelEnd
+                    levelName={this.state.selectedLevel.name}
                     health={this.state.health} 
                     success={this.state.success}
                     levelPoints={this.state.levelPoints}
