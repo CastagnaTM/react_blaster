@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 
-
 const story = ["Your Mission Is Almost Complete...", "As You Approach The Aliens' Homeworld...", "You Encounter A Sentient, Menacing Space Probe...",
  "NASA's 'The Voyager 1'...", "You Must Destroy It To Complete Your Adventure..."]
 
@@ -14,6 +13,15 @@ export default class BossIntro extends Component {
     }
 
     componentDidMount = () => {
+        document.addEventListener('keydown',(event) => {
+            if(event.code === 'Space'){
+                this.setState({
+                    story: null,
+                    intro: false,
+                    showStart: true
+                })
+            }
+        })
         this.loadStory()
     }
 
@@ -55,9 +63,10 @@ export default class BossIntro extends Component {
                     <div className='text-container' style={{display: this.state.showStart ? 'none' : 'block'}}>
                     <p className='story-text'>{story[this.state.storyValue]}</p>
                     </div>
+                    <p className='skip-text' style={{display: this.state.showStart ? 'none' : 'block'}}>Press The Spacebar To Skip...</p>
                     <button className='start-homescreen'
                     style={{display: this.state.showStart ? 'block' : 'none'}} 
-                    onClick={() => this.props.handleReturn()}>Continue</button>
+                    onClick={() => this.props.handleReturn(false)}>Continue</button>
                     </div>
             </div>
         )

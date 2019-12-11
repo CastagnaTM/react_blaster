@@ -8,6 +8,7 @@ import satelliteIcon from '../Assets/SatelliteIcon.png'
 import Bomb from '../Assets/Bomb.png'
 import ShoppeIcon from '../Assets/ShoppeIcon.png'
 import Asteroids from '../Assets/Asteroids.png'
+import LevelButton from '../Assets/Level Button.png'
 import homescreenMusic from '../Assets/Audio/homescreenMusic.mp3'
 import shopMusic from '../Assets/Audio/shopMusic.mp3'
 
@@ -64,7 +65,7 @@ export default class HomeScreen extends Component{
         loadLevel={this.loadLevel}
         />)
         return buttonArray[this.state.levelsCompleted]
-        // return buttonArray[0]
+        // return buttonArray[3]
     }
 
     moreInstructions = () => {
@@ -225,16 +226,16 @@ export default class HomeScreen extends Component{
                             <h3 className='text' style={{marginBottom: '-1%'}}>Level Instructions</h3>
                             <p className='text' style={{display: this.state.moreInstructions ? 'none' : 'block'}}>You Have 30 seconds to:</p>
                             <div className='instructions-icons'>
-                                <img className='instructions-img' src={this.state.moreInstructions? Asteroids : satelliteIcon} alt={this.state.moreInstructions ? "asteroid" : "satellite"}></img>
+                                <img className='instructions-img' src={this.state.moreInstructions? Asteroids : satelliteIcon} alt={this.state.moreInstructions ? "asteroid icon" : "satellite icon"}></img>
                                 <p className='text'>{this.state.moreInstructions ? 'Destroying These Requires Twice As Many Shots As Satellites. Earn 3 Points For Destroying Them!' : 'Earn Points By Shooting These'}</p>
                             </div>
                             <div className='instructions-icons'>
-                                <img className='instructions-img' src={this.state.moreInstructions ? ShoppeIcon : friendlySmall} alt={this.state.moreInstructions ? "shop-icon" : "alien" }></img>
-                                <p className='text'>{this.state.moreInstructions ? "Visit The Shoppe And Spend Your Points To Buy Health Potions And Upgrades. Your Health And Points Will Be Displayed In The Upper Right Corner" : "But Not These! You'll Lose 2 Points If You Do. Shoot Three And You Lose The Level"}</p>
+                                <img className='instructions-img' src={this.state.moreInstructions ? Bomb : friendlySmall} alt={this.state.moreInstructions ? "bomb icon" : "alien" }></img>
+                                <p className='text'>{this.state.moreInstructions ? "Shoot These If You Want, But You'll Lose 1 Health Point" : "But Not These! You'll Lose 2 Points If You Do. Shoot Three And You Lose The Level"}</p>
                             </div>
-                            <div className='instructions-icons' style={{marginBottom: '1%', display: this.state.moreInstructions ? 'none' : 'block'}}>
-                                <img className='instructions-img' src={Bomb} alt="bomb"></img>
-                                <p className='text'>Shoot These If You Want, But You'll Lose 1 Health Point</p>
+                            <div className='instructions-icons' style={{marginBottom: '1%'}}>
+                                <img className='instructions-img' src={this.state.moreInstructions ? ShoppeIcon : LevelButton} alt={this.state.moreInstructions ? "shop-icon" : 'Level Button icon' }></img>
+                                <p className='text'>{this.state.moreInstructions ? "Visit The Shoppe And Spend Your Points To Buy Health Potions And Upgrades. Your Health And Points Will Be Displayed In The Upper Right Corner" : "Click This Button On The Left To Load An Example GIF For The Level"}</p>
                             </div>
                             <button className='more-button' onClick={() => this.moreInstructions()}> {this.state.moreInstructions ? 'Back' : 'More ...'}</button>
                         </div>
@@ -303,15 +304,16 @@ export default class HomeScreen extends Component{
         )
     }
 
-    levelComplete = (completed, levelPoints, health) =>{
+    levelComplete = (completed, levelPoints, health, newGame) =>{
         music.play()
         if (completed === true){
             this.setState({
-            totalPoints: this.state.totalPoints + levelPoints,
-            health: health,
+            totalPoints: newGame === false ? (this.state.totalPoints + levelPoints) : 0,
+            health: newGame === false ? health : 4,
             playedOnce: true,
-            levelsCompleted: this.state.levelsCompleted + 1,
-            showLevelInfo: false
+            levelsCompleted: newGame === false ? (this.state.levelsCompleted + 1) : 0,
+            showLevelInfo: false,
+            maxHealth: newGame === false ? this.state.maxHealth : 4
             })
         }
         this.setState({
