@@ -55,7 +55,7 @@ export default class LevelEnd extends Component {
     }
 
     getHighscores = () => {
-        fetch('http://localhost:3000/users')
+        fetch('https://react-blaster-backend.herokuapp.com/users')
         .then(resp => resp.json())
         .then(data => {
             this.setState({
@@ -72,7 +72,7 @@ export default class LevelEnd extends Component {
 
     handleHighScores = (event) => {
         event.preventDefault()
-        fetch('http://localhost:3000/highscore',{
+        fetch('https://react-blaster-backend.herokuapp.com/highscore',{
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -128,13 +128,13 @@ export default class LevelEnd extends Component {
                 <div className='level-end-container'>
                     <div className='level-end-grid'>
                         <div>
-                            <p className='text' style={{textAlign: 'center'}}>
+                            <p className='level-end-text'>
                                 {this.props.success ? `Congrats! You Scored ${this.props.levelPoints} Points!` : 'Sorry, you lost this time around...'}
                             </p>
-                            <p className='text'>
+                            <p className='level-end-text'>
                             {this.props.gameComplete ? `You Beat The Game With ${this.state.score} Points!` : null}
                             </p>
-                            <p className='text'>
+                            <p className='level-end-text'>
                             {this.props.gameComplete ? `Enter Your Name Below:` : null}
                             </p>
                         </div>

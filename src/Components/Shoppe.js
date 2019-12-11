@@ -17,7 +17,7 @@ export default class Shoppe extends Component {
     }
 
     getItems = () => {
-        fetch('http://localhost:3000/items')
+        fetch('https://react-blaster-backend.herokuapp.com/items')
         .then(resp => resp.json())
         .then(data => {
             this.setState({
