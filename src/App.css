@@ -281,6 +281,7 @@
   margin-bottom: 4%;
 }
 .text{
+  /* text-align: center; */
   font-family: 'Tomorrow', sans-serif;
   color: whitesmoke;
   font-size: medium;
@@ -697,6 +698,14 @@
   box-shadow: 3px 3px 0px 0px #009994;
   border-radius: 5px;
   background-image: url('./Assets/gridBg.png');
+}
+.level-end-text{
+  text-align: center;
+  font-family: 'Tomorrow', sans-serif;
+  color: whitesmoke;
+  font-size: medium;
+  margin-top: 1%;
+  margin-left: 2%;
 }
 .highscores-container {
   display: flex;

@@ -46,7 +46,7 @@ export default class HomeScreen extends Component{
 
     //fetches the levels
     getLevels = () => {
-        fetch('http://localhost:3000/levels')
+        fetch('https://react-blaster-backend.herokuapp.com/levels')
         .then(resp => resp.json())
         .then(data => {
            this.setState({
