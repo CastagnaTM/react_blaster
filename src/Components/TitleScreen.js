@@ -68,6 +68,7 @@ export default class TitleScreen extends Component {
                     <div className='logo-container' style={{display: this.state.story ? 'none' : 'inline-block'}}
                     onClick={() => this.loadStory()}>
                         <img className='logo-img'src={Logo} alt="React Blaster"/>
+                        <p className='skip-text'>Click To Start</p>
                     </div>
                 </div>
             )
