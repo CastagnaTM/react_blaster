@@ -99,7 +99,6 @@ export default class LevelEnd extends Component {
 
     moreScores = () => {
         //some sort of conditional to check the length of the scores array
-        console.log(this.state.highscores[this.state.scoresIndex + 6])
         if(this.state.highscores[this.state.scoresIndex + 6]){
             this.setState({
                 scoresIndex: this.state.scoresIndex + 5

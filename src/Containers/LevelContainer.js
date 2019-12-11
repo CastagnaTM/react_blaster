@@ -17,10 +17,9 @@ let music;
 
 export default class LevelContainer extends Component{
 
-    //refactor later to use a switch statement to run through these functions based on which level is selected
 
     state = {
-        selectedLevel: this.props.selectedLevel, //this should hold all info the container needs to render this level
+        selectedLevel: this.props.selectedLevel, 
         blasterPower: this.props.blasterPower,
         health: this.props.health,
         maxHealth: this.props.maxHealth,
@@ -55,7 +54,6 @@ export default class LevelContainer extends Component{
 
     //function for handling target clicks
     handleClick = (name, target_type) => {
-        console.log(this.state.blasterPower)
         //finds the target that was clicked
         let thisTarget = this.state.targets.find(target => target.name === name)
         if(target_type !== 'asteroid'){
