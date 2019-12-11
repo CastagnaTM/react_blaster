@@ -3,6 +3,9 @@ Play the game: https://react-blaster.herokuapp.com/
 
 React Blaster is a space-themed point and click target-practice game, styled after classic arcade and retro games. As my final project for The Flatiron School, the game relies heavily on manipulation of state, and passing information between components.
 
+The game is meant to be played on a desktop or laptop, and not mobile. 
+It works best in Chrome, but still works well in Safari. 
+
 This game was built using a Rails backend (found here: https://github.com/CastagnaTM/react_blaster_backend), and React frontend.
 
 All styling and animation was done in CSS, featuring Hover.CSS by Ian Lunn (https://ianlunn.github.io/Hover/) for most buttons in the game.
