@@ -530,7 +530,7 @@
   box-shadow: -1px -1px #009994; 
   transition: 0.2s;
   border-radius: 5px;
-  cursor: url('./Assets/mouseTarget.png'), auto;
+  cursor: crosshair;
 }
 .boss-img {
   max-width: 90%;
