@@ -8,9 +8,12 @@ import satelliteIcon from '../Assets/SatelliteIcon.png'
 import Bomb from '../Assets/Bomb.png'
 import ShoppeIcon from '../Assets/ShoppeIcon.png'
 import Asteroids from '../Assets/Asteroids.png'
+import LevelButton from '../Assets/Level Button.png'
 import homescreenMusic from '../Assets/Audio/homescreenMusic.mp3'
+import shopMusic from '../Assets/Audio/shopMusic.mp3'
 
-let music = new Audio(homescreenMusic)
+let music = new Audio(homescreenMusic);
+let shopTunes = new Audio(shopMusic)
 
 
 //this component holds the homescreen, including level selection and potentially other options
@@ -62,7 +65,7 @@ export default class HomeScreen extends Component{
         loadLevel={this.loadLevel}
         />)
         return buttonArray[this.state.levelsCompleted]
-        // return buttonArray[0]
+        // return buttonArray[3]
     }
 
     moreInstructions = () => {
@@ -72,9 +75,13 @@ export default class HomeScreen extends Component{
     }
     
     handleShoppe = () => {
+        music.pause()
+        music.currentTime=0.0
+        
         this.setState({
             shoppeView: true
         })
+        shopTunes.play()
     }
 
     handleEasterEgg = () => {
@@ -124,22 +131,40 @@ export default class HomeScreen extends Component{
                         })
                     break;
                 case "Double Blast-O'-Matic":
+                    if(this.state.blasterPower === 3){
+                        alert("You'll Need The RYNO If You Want To Upgrade Your Firing Power Further")
+                    }
+                    else if(this.state.blasterPower === 5){
+                        alert("You've Already Maxed Out Your Firing Power")
+                    }
+                    else{
                         this.setState({
                             blasterPower: 3,
                             totalPoints: this.state.totalPoints - price
                         })
+                    }
                     break;
                 case "The RYNO":
-                        this.setState({
-                            blasterPower: 5,
-                            totalPoints: this.state.totalPoints - price
-                        })
+                        if(this.state.blasterPower === 5){
+                            alert("You've Already Maxed Out Your Firing Power")
+                        }
+                        else{
+                            this.setState({
+                                blasterPower: 5,
+                                totalPoints: this.state.totalPoints - price
+                            })
+                        }
                     break;
                 case 'Armor Upgrade':
-                    this.setState({
-                        maxHealth: 8,
-                        totalPoints: this.state.totalPoints - price
-                    })
+                    if (this.state.maxHealth === 8){
+                        alert("You've Already Maxed Out Your Armor")
+                    }
+                    else {
+                        this.setState({
+                            maxHealth: 8,
+                            totalPoints: this.state.totalPoints - price
+                        })
+                    }
                     break;
                 default:
                     console.log('something went wrong')
@@ -153,14 +178,18 @@ export default class HomeScreen extends Component{
     }
 
     backToGame = () => {
+        shopTunes.pause()
+        shopTunes.currentTime=0.0
         this.setState({
             shoppeView: false
         })
+        music.play()
     }
 
     loadShoppe = () => {
         return(
             <Shoppe
+            maxHealth={this.state.maxHealth}
             handleEasterEgg={this.handleEasterEgg}
             easterEgg={this.state.easterEgg}
             blasterPower={this.state.blasterPower}
@@ -176,7 +205,7 @@ export default class HomeScreen extends Component{
             <div className='home-screen-background'>
                 <div className='home-screen-header'>
                     <p className='text' style={{marginRight: '2%', marginTop: '0%'}}>{this.state.playedOnce ? `New Total Score: ${this.state.totalPoints}` : `Total Score: ${this.state.totalPoints}`}</p>
-                    <p className='text' style={{marginRight: '2%'}}>Health: {this.state.health}/{this.state.health}</p>
+                    <p className='text' style={{marginRight: '2%'}}>Health: {this.state.health}/{this.state.maxHealth}</p>
                 </div>
                 <div className='home-screen-column'>
                 <div style={{marginLeft: '8%'}}>
@@ -197,16 +226,16 @@ export default class HomeScreen extends Component{
                             <h3 className='text' style={{marginBottom: '-1%'}}>Level Instructions</h3>
                             <p className='text' style={{display: this.state.moreInstructions ? 'none' : 'block'}}>You Have 30 seconds to:</p>
                             <div className='instructions-icons'>
-                                <img className='instructions-img' src={this.state.moreInstructions? Asteroids : satelliteIcon} alt={this.state.moreInstructions ? "asteroid" : "satellite"}></img>
-                                <p className='text'>{this.state.moreInstructions ? 'These Are Twice As Tough As Satellites. Earn 3 Points For Destroying Them!' : 'Earn Points By Shooting These'}</p>
+                                <img className='instructions-img' src={this.state.moreInstructions? Asteroids : satelliteIcon} alt={this.state.moreInstructions ? "asteroid icon" : "satellite icon"}></img>
+                                <p className='text'>{this.state.moreInstructions ? 'Destroying These Requires Twice As Many Shots As Satellites. Earn 3 Points For Destroying Them!' : 'Earn Points By Shooting These'}</p>
                             </div>
                             <div className='instructions-icons'>
-                                <img className='instructions-img' src={this.state.moreInstructions ? ShoppeIcon : friendlySmall} alt={this.state.moreInstructions ? "shop-icon" : "alien" }></img>
-                                <p className='text'>{this.state.moreInstructions ? "Visit The Shoppe And Spend Your Points To Buy Health Potions And Upgrades. Your Health And Points Will Be Displayed In The Upper Right Corner" : "But Not These! You'll Lose 2 Points If You Do. Shoot Three And You Lose The Level"}</p>
+                                <img className='instructions-img' src={this.state.moreInstructions ? Bomb : friendlySmall} alt={this.state.moreInstructions ? "bomb icon" : "alien" }></img>
+                                <p className='text'>{this.state.moreInstructions ? "Shoot These If You Want, But You'll Lose 1 Health Point" : "But Not These! You'll Lose 2 Points If You Do. Shoot Three And You Lose The Level"}</p>
                             </div>
-                            <div className='instructions-icons' style={{marginBottom: '1%', display: this.state.moreInstructions ? 'none' : 'block'}}>
-                                <img className='instructions-img' src={Bomb} alt="bomb"></img>
-                                <p className='text'>Shoot These If You Want, But You'll Lose 1 Health Point</p>
+                            <div className='instructions-icons' style={{marginBottom: '1%'}}>
+                                <img className='instructions-img' src={this.state.moreInstructions ? ShoppeIcon : LevelButton} alt={this.state.moreInstructions ? "shop-icon" : 'Level Button icon' }></img>
+                                <p className='text'>{this.state.moreInstructions ? "Visit The Shoppe And Spend Your Points To Buy Health Potions And Upgrades. Your Health And Points Will Be Displayed In The Upper Right Corner" : "Click This Button On The Left To Load An Example GIF For The Level"}</p>
                             </div>
                             <button className='more-button' onClick={() => this.moreInstructions()}> {this.state.moreInstructions ? 'Back' : 'More ...'}</button>
                         </div>
@@ -275,15 +304,16 @@ export default class HomeScreen extends Component{
         )
     }
 
-    levelComplete = (completed, levelPoints, health) =>{
+    levelComplete = (completed, levelPoints, health, newGame) =>{
         music.play()
         if (completed === true){
             this.setState({
-            totalPoints: this.state.totalPoints + levelPoints,
-            health: health,
+            totalPoints: newGame === false ? (this.state.totalPoints + levelPoints) : 0,
+            health: newGame === false ? health : 4,
             playedOnce: true,
-            levelsCompleted: this.state.levelsCompleted + 1,
-            showLevelInfo: false
+            levelsCompleted: newGame === false ? (this.state.levelsCompleted + 1) : 0,
+            showLevelInfo: false,
+            maxHealth: newGame === false ? this.state.maxHealth : 4
             })
         }
         this.setState({

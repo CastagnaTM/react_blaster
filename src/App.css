@@ -57,6 +57,7 @@
   -o-background-size: cover;
   margin: 0%;
   height: 100vh;
+  overflow: hidden;
 }
 .logo-container{
   display: inline-block;
@@ -206,14 +207,13 @@
   margin: 0%;
   width: auto;
   height: 100vh;
+  overflow: hidden;
 }
 .home-screen-header {
   text-align: right;
   background-color:rgb(12, 12, 12);
   border-bottom: 2px solid black;
-  margin: 0%;
-  /* margin-bottom: 2%; */
-  
+  margin: 0%;  
 }
 .hvr-overline-from-right {
   display: inline-block;
@@ -599,6 +599,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
+  overflow: hidden;
 }
 .level-two {
   background-image: url('./Assets/levelTwoBg.jpg');
@@ -606,6 +607,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
+  overflow: hidden;
 }
 .level-three {
   background-image: url('./Assets/levelThreeBg.jpg');
@@ -613,6 +615,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
+  overflow: hidden;
 }
 .boss-fight {
   background-image: url('./Assets/BossFightBg.jpg');
@@ -620,7 +623,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
-  
+  overflow: hidden;
 }
 /* 
 * level end return button 
@@ -681,11 +684,12 @@
   align-items: center;
   justify-content: center;
   width: 80%;
+  height: 100%;
 }
 .level-end-grid {
   float: left;
   width: 30%; 
-  margin-top: 15%;
+  margin-top: 10%;
   margin-left: 20%;
   padding: 4%;
   border-top: inset #7D1F87 4px;
@@ -697,8 +701,7 @@
 .highscores-container {
   display: flex;
   width: 38%;
-  min-height:40%;
-  height: auto;
+  height: 42%;
   margin-top: 2%;
   margin-left: 21%;
   justify-content: center;
@@ -730,7 +733,6 @@
   float: left;
   width: 90%;
   min-height: 70%;
-  /* margin-left: 2%; */
   margin-top: 2%;
 }
 .shopkeeper-container {
@@ -912,6 +914,9 @@
   margin-left: 42%;
   margin-bottom: 2%;
 }
+.hvr-ripple-out2:focus {
+  outline: none;
+}
 .hvr-ripple-out2:before {
   content: '';
   position: absolute;
@@ -925,6 +930,7 @@
   animation-duration: 1s;
 }
 .hvr-ripple-out2:hover:before, .hvr-ripple-out2:focus:before, .hvr-ripple-out2:active:before {
+  outline: none;
   -webkit-animation-name: hvr-ripple-out;
   animation-name: hvr-ripple-out;
 }

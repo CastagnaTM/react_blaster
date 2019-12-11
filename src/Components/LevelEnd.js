@@ -10,8 +10,10 @@ export default class LevelEnd extends Component {
         highscores: null,
         name: '',
         score: null,
-        show: false,
-        showBossIntro: false
+        showBossIntro: false,
+        currentWinner: null,
+        scoresIndex: 0,
+        showForm: true
     }
 
     componentDidMount = () => {
@@ -20,23 +22,30 @@ export default class LevelEnd extends Component {
             this.setCurrentScore()
             this.getHighscores()
         }
-        
     }
 
-    handleReturn = () => {
-        this.props.levelComplete(this.props.success, this.props.levelPoints, this.props.health)
+    handleReturn = (newGame) => {
+        if(newGame === true){
+            this.props.stopMusic()
+        }
+        this.props.levelComplete(this.props.success, this.props.levelPoints, this.props.health, newGame === false ? false : true)
     }
+
     handleBossIntro = () => {
         this.setState({
             showBossIntro: true
         })
-
     }
 
-    displayHighscores = () => { 
-        let allHighscores = this.state.highscores.sort((a,b) => a.score < b.score ? 1 : -1)
-        highscores = allHighscores.slice(0,5)
-        return( highscores.map(score => <li className='text' style={{marginLeft: '34%', padding: '1%'}}>{score.name} . . . {score.score}</li>) )
+    displayHighscores = () => {
+        let index = this.state.scoresIndex;
+        let allHighscores = this.state.highscores
+        if(this.state.currentWinner !== null && !allHighscores.includes(this.state.currentWinner)){
+            allHighscores.push(this.state.currentWinner)
+        }
+        allHighscores.sort((a,b) => a.score < b.score ? 1 : -1)
+        highscores = allHighscores.slice(index,index+5)
+        return( highscores.map(score => <li key={score.id} className='text' style={{marginLeft: '34%', padding: '1%'}}>{score.name} . . . {score.score}</li>) )
     }
 
     setCurrentScore = () => {
@@ -50,7 +59,7 @@ export default class LevelEnd extends Component {
         .then(resp => resp.json())
         .then(data => {
             this.setState({
-                highscores: data
+                highscores: data.sort((a,b) => a.score < b.score ? 1 : -1)
             })
         })
     }
@@ -81,10 +90,26 @@ export default class LevelEnd extends Component {
             }
         })
         this.setState({
-            show: true,
+            showForm: false,
             name: this.state.name,
-            score: this.state.score 
+            score: this.state.score,
+            currentWinner: {name: this.state.name, score: this.state.score}
         })
+    }
+
+    moreScores = () => {
+        //some sort of conditional to check the length of the scores array
+        console.log(this.state.highscores[this.state.scoresIndex + 6])
+        if(this.state.highscores[this.state.scoresIndex + 6]){
+            this.setState({
+                scoresIndex: this.state.scoresIndex + 5
+            })
+        }
+        else{
+            this.setState({
+                scoresIndex: 0
+            }) 
+        }
     }
 
     render(){
@@ -102,31 +127,39 @@ export default class LevelEnd extends Component {
         else{
             return(
                 <div className='level-end-container'>
-                    <div className='level-end-grid' style={{display: this.props.scoresView ? 'none' : 'block'}}>
+                    <div className='level-end-grid'>
                         <div>
                             <p className='text' style={{textAlign: 'center'}}>
                                 {this.props.success ? `Congrats! You Scored ${this.props.levelPoints} Points!` : 'Sorry, you lost this time around...'}
                             </p>
                             <p className='text'>
-                            {this.props.gameComplete ? `You Beat The Game With ${this.state.score} Points! Enter Your Name Below:` : null}
+                            {this.props.gameComplete ? `You Beat The Game With ${this.state.score} Points!` : null}
+                            </p>
+                            <p className='text'>
+                            {this.props.gameComplete ? `Enter Your Name Below:` : null}
                             </p>
                         </div>
                         <div>
                             <button style={{display: this.props.gameComplete ? 'none' : 'block'}}
                             className='hvr-ripple-out' 
-                            onClick={this.props.levelName === 'Level Three' ? this.handleBossIntro : this.handleReturn}>Continue</button>
+                            onClick={this.props.levelName === 'Level Three' && this.props.success ? this.handleBossIntro : () => this.handleReturn(false)}>Continue
+                            </button>
+                            <button style={{display: this.props.gameComplete ? 'block' : 'none'}}
+                            className='hvr-ripple-out' 
+                            onClick={() => this.handleReturn(true)}>Play Again?
+                            </button>
                         </div>
                     </div>
                     <div className='highscores-container' style={{display: this.props.gameComplete ? 'block' : 'none'}}>
                         <h4 className='text' style={{marginLeft: '40%'}}>High Scores</h4>
-                        <form className="form" onSubmit={this.handleHighScores}>
+                        <form className="form" onSubmit={this.handleHighScores} style={{display: this.state.showForm ? 'block' : 'none'}}>
                             <input className="input" name="name" value={this.state.name} onChange={this.handleChange} placeholder="Name..." />
                             <button className='scores-button' type="submit">Submit</button>
                         </form>
                         <ul>
-                            <li className='text' style={{marginLeft: '34%', padding: '1%', display: this.state.show ? 'list-item' : 'none'}}> {this.state.name} ... {this.state.score}</li>
                             {this.state.highscores ? this.displayHighscores() : null}
                         </ul>
+                        <button className='more-button' onClick={() => this.moreScores()}>More</button>
                     </div>
                 </div>
             )

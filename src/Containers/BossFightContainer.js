@@ -23,7 +23,7 @@ export default class BossFightContainer extends Component{
         health: this.props.health,
         maxHealth: this.props.maxHealth,
         targets: null,
-        boss: [{name: 'Boss', target_type: 'boss', isClicked: 100}],
+        boss: {name: 'Boss', target_type: 'boss', isClicked: 100},
         counter: 0,
         isClicked: 0,
         levelPoints: 0,
@@ -35,6 +35,7 @@ export default class BossFightContainer extends Component{
         debrisBackgroundColor: '#0B162A',
         hitFriendlyCount: 0,
         bossView: false,
+        gameComplete: false
     }
     
 
@@ -85,7 +86,7 @@ export default class BossFightContainer extends Component{
     }
 
     handleBossClick = (name) => {
-        let thisTarget = this.state.boss.find(boss => boss.name === name)
+        let thisTarget = this.state.boss // can probably just be an object, not an array with one object in it ...
         console.log(this.state.bossHealth)
         if(thisTarget.isClicked > 0){
             thisTarget.isClicked -= this.state.blasterPower;
@@ -216,6 +217,7 @@ export default class BossFightContainer extends Component{
                 clearInterval(gameLoop)
                 this.setState({
                     success: true,
+                    gameComplete: true,
                     levelEnd: true
                 })
             }
@@ -235,12 +237,6 @@ export default class BossFightContainer extends Component{
     
     // Function for displaying boss on screen
     runBoss = () => {
-        //render boss -- load Targets component with a single boss target
-        console.log(this.state.counter)
-
-        this.setState({
-            counter: 0
-        })
         var bossLoop = setInterval(() => {
             this.setState({
                 counter: this.state.counter+1
@@ -252,7 +248,7 @@ export default class BossFightContainer extends Component{
                     bossView: false
                 })
             }
-            if(this.state.counter === 2 || (this.state.bossHealth < 80 && this.state.bossHealth > 70)){
+            if(this.state.counter % 2 === 0){
                 this.setState({
                     bossView: false
                 })
@@ -262,16 +258,11 @@ export default class BossFightContainer extends Component{
         }, 2000)
     }
     renderBoss = () => {
-        return <FlipMove
-        staggerDelayBy={100}
-        appearAnimation="elevator"
-        enterAnimation="fade"
-        leaveAnimation="fade"
-        >
-        {this.state.boss.map(boss => <Targets 
-        handleBossClick={this.handleBossClick} key={boss.name}{...boss}
-        />)}
-        </FlipMove>
+        return (
+        <Targets 
+        {...this.state.boss}
+        handleBossClick={this.handleBossClick} 
+        />)
         
     }
 
@@ -283,8 +274,9 @@ export default class BossFightContainer extends Component{
             return(
                 <div className={this.props.selectedLevel.css}>
                     <LevelEnd
+                    stopMusic={this.stopMusic}
                     totalPoints={this.props.totalPoints}
-                    gameComplete={true}
+                    gameComplete={this.state.gameComplete}
                     health={this.state.health} 
                     success={this.state.success}
                     levelPoints={this.state.levelPoints}

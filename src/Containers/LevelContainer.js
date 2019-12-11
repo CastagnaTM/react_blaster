@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import FlipMove from 'react-flip-move'
 import Targets from '../Components/Targets'
 import LevelEnd from '../Components/LevelEnd'
 import friendlySmall from '../Assets/FriendlySmall.png'
@@ -152,18 +151,12 @@ export default class LevelContainer extends Component{
 
     // passes the targets to the Target component
     renderTargets = () => {
-        return <FlipMove
-        staggerDelayBy={100}
-        appearAnimation="elevator"
-        enterAnimation="fade"
-        leaveAnimation="fade"
-        >
-        {this.state.targets.map(target => <Targets 
+        return this.state.targets.map(target => <Targets 
         handleClick={this.handleClick} key={target.name}{...target}
         friendlyBackgroundColor={this.state.friendlyBackgroundColor}
         debrisBackgroundColor={this.state.debrisBackgroundColor}
-        />)}
-        </FlipMove>
+        />)
+        
     }
     playMusic = () => {
         music.play();
@@ -196,9 +189,6 @@ export default class LevelContainer extends Component{
         //translate targets function
         if (this.state.targets === null){
             this.establishTargets(this.state.selectedLevel.targetString)
-        }
-        if(this.state.selectedLevel.name === 'Level Three'){
-            music.currentTime = 34.0;
         }
         this.playMusic();
         var gameLoop = setInterval(() =>{

@@ -22,8 +22,7 @@ export default class LevelSelector extends Component {
         }
     }
 
-
-    //this is really just the button that the user clicks to select a level
+    //Loads Level Info And Start Button
     render(){
             return(
                 <div>
@@ -36,10 +35,10 @@ export default class LevelSelector extends Component {
                             <button className='hvr-sweep-to-right-start'
                                 onClick={() => this.props.loadLevel(this.props)}>Start!
                             </button> 
-                            <p className='text' style={{marginLeft: '10%'}}> {this.props.name} {this.props.name === 'Boss Fight!' ? ': Take out the source of the debris! This would be a good time to a have a serious weapon upgrade...' : `: Score At Least ${this.props.goal} Points!`}</p>
+                            <p className='text' style={{marginLeft: '10%'}}> {this.props.name} {this.props.name === 'Boss Fight!' ? ': Take out the Voyager 1! Destory 12 Asteroids To Make The Boss Appear, And Do As Much Damage As You Can Before It Dissapears Again! Watch Out For Bombs, And Consider A Serious Weapon Upgrade...' : `: Finish The Level With At Least ${this.props.goal} Points!`}</p>
                             <div className='gif-container'>
                                 <img className='level-gif' src={this.getGif(this.props.name)} alt="gameplay gif"/>
-                                <p className='text' style={{display: this.props.playedOnce ? 'none' : 'block'}}>^ This Is Your In-Game Display. Your Health Meter Is On The Left, Your Game in The Center, And Your Number Of Aliens Hit And Current Score Are Underneath</p>
+                                <p className='text' style={{display: this.props.playedOnce ? 'none' : 'block'}}>^ This Is Your In-Game Display. Your Health Meter Is On The Left, Your Game in The Center, And Your "Strikes" For Hitting Aliens And Current Score Are Underneath</p>
                             </div>
                         </div>
                     </div>       
