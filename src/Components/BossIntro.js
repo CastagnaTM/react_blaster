@@ -30,7 +30,6 @@ export default class BossIntro extends Component {
             intro: true,
         })
         var introLoop = setInterval(() => {
-            console.log(this.state.storyValue)
             this.getNext();
             if(story[this.state.storyValue] === undefined){
                 clearInterval(introLoop)

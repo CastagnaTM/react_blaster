@@ -254,7 +254,6 @@ export default class HomeScreen extends Component{
     loadLevel = (info) => {
         let obj = info
         if(obj.name === 'Boss Fight!'){
-            console.log('boss fight')
             this.setState({
                 selectedLevel: obj,
                 fightBoss: true

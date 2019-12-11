@@ -47,7 +47,6 @@ export default class BossFightContainer extends Component{
 
     //function for handling target clicks
     handleClick = (name, target_type) => {
-        console.log(this.state.blasterPower)
         //finds the target that was clicked
         let thisTarget = this.state.targets.find(target => target.name === name)  
         //conditional for responding to target type
@@ -87,7 +86,6 @@ export default class BossFightContainer extends Component{
 
     handleBossClick = (name) => {
         let thisTarget = this.state.boss // can probably just be an object, not an array with one object in it ...
-        console.log(this.state.bossHealth)
         if(thisTarget.isClicked > 0){
             thisTarget.isClicked -= this.state.blasterPower;
             this.setState({
