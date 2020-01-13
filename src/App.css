@@ -266,7 +266,7 @@
 }
 .instructions-icons {
   display: row;
-  margin-top: 2%;
+  margin-top: 1%;
   padding:1%;
 }
 .instructions-img {
@@ -287,6 +287,10 @@
   font-size: medium;
   margin-top: 1%;
   margin-left: 2%;
+}
+#instructions-text {
+    text-align: center;
+    margin-bottom: -1%;
 }
 .more-button {
   margin-bottom: -2%; 
@@ -942,4 +946,43 @@
   outline: none;
   -webkit-animation-name: hvr-ripple-out;
   animation-name: hvr-ripple-out;
+}
+
+/* overlay info */
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 30%;
+  height: 30%;
+  background-color: rgb(28, 25, 25);
+  border: solid rgba(0,0,0,0.9);
+  z-index: 2;
+  border-top: inset #7D1F87 4px;
+  border-left: inset #7D1F87 4px;
+  border-bottom: inset #009994 4px;
+  border-right: inset #009994 4px;
+  border-radius: 5px;
+}
+  
+#overlay-button {
+  margin-top: 5%;
+  padding: 1%;
+  margin-left: 45%;
+  font-size: medium;
+  border-radius: 0.5em;
+  background-color: rgb(11, 10, 10);
+  color: whitesmoke;
+  font-family: 'Tomorrow', sans-serif;
+}
+
+#overlay-font {
+  margin-top: 10%;
+  font-family: 'Tomorrow', sans-serif;
+  color:whitesmoke;
+  text-align: center;
 }
