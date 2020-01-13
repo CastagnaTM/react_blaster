@@ -34,7 +34,6 @@ export default class TitleScreen extends Component {
             titleScreen: false
         })
         var introLoop = setInterval(() => {
-            console.log(this.state.storyValue)
             this.getNext();
             if(story[this.state.storyValue] === undefined){
                 clearInterval(introLoop)
@@ -96,5 +95,3 @@ export default class TitleScreen extends Component {
         
     }
 }
-// logo-container  level select container
-//logo  level select

@@ -63,6 +63,10 @@ export default class Shoppe extends Component {
     render(){
         return(
             <div className='home-screen-background'>
+                 <div className='overlay' style={{display: this.props.alertMessage ? 'block' : 'none'}}>
+                    <h3 id='overlay-font'>{this.props.alertMessage}</h3>
+                    <button id='overlay-button' onClick={this.props.closeAlert}>OK</button> 
+                </div>
                 <div className='shoppe-header'>
                     <p className='text' style={{fontWeight: 'bolder', marginTop: '0%'}}>Shoppe</p>
                     <div className='shoppe-header-row'>
