@@ -93,7 +93,6 @@ export default class HomeScreen extends Component{
     handlePurchase = (item) => {
         let price = this.state.easterEgg? item.price+30 : item.price
         if(this.state.totalPoints >= price){
-            debugger
             switch(item.name){
                 case 'Regular Health Potion':
                     if(this.state.maxHealth === 4){
