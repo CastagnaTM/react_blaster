@@ -46,7 +46,7 @@ export default class HomeScreen extends Component{
 
     //fetches the levels
     getLevels = () => {
-        fetch('https://react-blaster-backend.herokuapp.com/levels')
+        fetch('http://localhost:3000/levels')
         .then(resp => resp.json())
         .then(data => {
            this.setState({
@@ -93,6 +93,7 @@ export default class HomeScreen extends Component{
     handlePurchase = (item) => {
         let price = this.state.easterEgg? item.price+30 : item.price
         if(this.state.totalPoints >= price){
+            debugger
             switch(item.name){
                 case 'Regular Health Potion':
                     if(this.state.maxHealth === 4){
@@ -130,7 +131,7 @@ export default class HomeScreen extends Component{
                             totalPoints: this.state.totalPoints - price
                         })
                     break;
-                case "Double Blast-O'-Matic":
+                case "Triple Blast-O'-Matic":
                     if(this.state.blasterPower === 3){
                         alert("You'll Need The RYNO If You Want To Upgrade Your Firing Power Further")
                     }

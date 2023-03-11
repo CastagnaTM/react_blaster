@@ -55,7 +55,7 @@ export default class LevelEnd extends Component {
     }
 
     getHighscores = () => {
-        fetch('https://react-blaster-backend.herokuapp.com/users')
+        fetch('http://localhost:3000/users')
         .then(resp => resp.json())
         .then(data => {
             this.setState({
@@ -72,7 +72,7 @@ export default class LevelEnd extends Component {
 
     handleHighScores = (event) => {
         event.preventDefault()
-        fetch('https://react-blaster-backend.herokuapp.com/highscore',{
+        fetch('http://localhost:3000/highscore',{
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
